@@ -1,0 +1,3433 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tugas Akhir Semester Ganjil Kelas 7</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              bg: '#030712',
+              card: '#0f172a',
+              cyan: '#06b6d4',
+              purple: '#8b5cf6',
+              emerald: '#10b981',
+              pink: '#ec4899',
+              amber: '#f59e0b',
+            }
+          },
+          animation: {
+            'glow-pulse': 'glowPulse 3s infinite alternate',
+            'float': 'float 4s ease-in-out infinite',
+            'spin-slow': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            glowPulse: {
+              '0%': { boxShadow: '0 0 15px rgba(6, 182, 212, 0.2), inset 0 0 15px rgba(6, 182, 212, 0.1)' },
+              '100%': { boxShadow: '0 0 35px rgba(139, 92, 246, 0.4), inset 0 0 25px rgba(139, 92, 246, 0.2)' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+      border: 1px solid #475569;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #06b6d4;
+    }
+
+    .cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    }
+
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(6, 182, 212, 0.7);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.3);
+      transform: translateY(-3px);
+    }
+
+    .slide-content {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .slide-content.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .glow-cyan {
+      text-shadow: 0 0 12px rgba(6, 182, 212, 0.7), 0 0 24px rgba(6, 182, 212, 0.4);
+    }
+    .glow-purple {
+      text-shadow: 0 0 12px rgba(139, 92, 246, 0.7), 0 0 24px rgba(139, 92, 246, 0.4);
+    }
+
+    kbd {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border: 1.5px solid #64748b;
+      box-shadow: 0 2px 0 #0f172a, inset 0 1px 0 rgba(255,255,255,0.2);
+      border-radius: 0.375rem;
+      padding: 0.2rem 0.5rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #38bdf8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s ease;
+      user-select: none;
+    }
+
+    kbd.active-key {
+      background: #06b6d4;
+      color: #030712;
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.8);
+      transform: translateY(2px);
+    }
+
+    .card-3d {
+      transform-style: preserve-3d;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-3d:hover {
+      transform: translateY(-6px) rotateX(4deg) rotateY(-3deg) scale(1.02);
+      box-shadow: 0 20px 30px -10px rgba(6, 182, 212, 0.3), 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .memory-card {
+      perspective: 1000px;
+    }
+    .memory-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.5s;
+      transform-style: preserve-3d;
+    }
+    .memory-card.flipped .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+    .memory-card-front, .memory-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .memory-card-back {
+      transform: rotateY(180deg);
+    }
+
+    @keyframes particleUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-40px) scale(1.3); }
+    }
+    .click-particle {
+      position: absolute;
+      pointer-events: none;
+      animation: particleUp 0.7s ease-out forwards;
+      font-family: 'Fira Code', monospace;
+      font-weight: 800;
+    }
+
+    body.projector-mode {
+      background-color: #ffffff !important;
+      color: #020617 !important;
+      background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px) !important;
+      background-size: 24px 24px !important;
+    }
+
+    body.projector-mode .glass-panel,
+    body.projector-mode .glass-card {
+      background: #ffffff !important;
+      border: 2.5px solid #020617 !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+      color: #020617 !important;
+    }
+
+    body.projector-mode h1,
+    body.projector-mode h2,
+    body.projector-mode h3,
+    body.projector-mode h4,
+    body.projector-mode h5,
+    body.projector-mode h6 {
+      color: #020617 !important;
+      text-shadow: none !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode p,
+    body.projector-mode label,
+    body.projector-mode span,
+    body.projector-mode div {
+      color: #0f172a !important;
+      font-weight: 700 !important;
+    }
+
+    body.projector-mode input,
+    body.projector-mode select,
+    body.projector-mode textarea {
+      background-color: #f8fafc !important;
+      color: #000000 !important;
+      border: 2.5px solid #020617 !important;
+      font-weight: 800 !important;
+    }
+
+    body.projector-mode .bg-slate-900,
+    body.projector-mode .bg-slate-950,
+    body.projector-mode .bg-slate-800 {
+      background-color: #f1f5f9 !important;
+      color: #020617 !important;
+      border-color: #334155 !important;
+    }
+
+    body.projector-mode .text-slate-400,
+    body.projector-mode .text-slate-500,
+    body.projector-mode .text-slate-300 {
+      color: #1e293b !important;
+      font-weight: 800 !important;
+    }
+
+    body.projector-mode .text-cyan-400,
+    body.projector-mode .text-cyan-300 {
+      color: #0284c7 !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode .text-purple-400,
+    body.projector-mode .text-purple-300 {
+      color: #6d28d9 !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode .text-emerald-400,
+    body.projector-mode .text-emerald-300 {
+      color: #15803d !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode .text-amber-400,
+    body.projector-mode .text-amber-300 {
+      color: #b45309 !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode .text-pink-400,
+    body.projector-mode .text-pink-300 {
+      color: #be185d !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode header,
+    body.projector-mode footer {
+      background: #ffffff !important;
+      border-color: #020617 !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+    }
+
+    body.projector-mode kbd {
+      background: #e2e8f0 !important;
+      color: #020617 !important;
+      border: 2px solid #1e293b !important;
+      font-weight: 900 !important;
+    }
+
+    body.projector-mode .glow-cyan,
+    body.projector-mode .glow-purple {
+      text-shadow: none !important;
+      color: #020617 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between overflow-x-hidden cyber-grid selection:bg-cyan-500 selection:text-slate-950">
+
+  <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <header class="sticky top-0 z-40 glass-panel border-b border-slate-700 px-4 py-3 shadow-2xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <div class="flex items-center gap-3 cursor-pointer" onclick="goToSlide(3)">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+          <i class="fa-solid fa-microchip text-slate-950 text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-black text-base md:text-lg tracking-wide flex items-center gap-2">
+            DUNIA INFORMATIKA
+          </h1>
+          <p class="text-xs text-slate-300 font-mono hidden sm:block font-bold">Interactive SPA Presentation</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 md:gap-3 flex-wrap">
+
+        <button onclick="toggleProjectorMode()" id="btn-projector-mode" class="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 active:scale-95" title="Aktifkan Mode Terang Khusus Infocus / Papan Tulis (Shortcut: P)">
+          <i class="fa-solid fa-display text-sm"></i>
+          <span id="projector-mode-label">Mode Proyektor: OFF</span>
+        </button>
+
+        <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 shadow-inner">
+          <i class="fa-solid fa-layer-group text-cyan-400 text-xs"></i>
+          <select id="slide-dropdown" onchange="goToSlide(parseInt(this.value))" class="bg-transparent text-xs md:text-sm text-slate-100 focus:outline-none cursor-pointer font-bold pr-1">
+            <option value="0" class="bg-slate-900">Slide 1: 🎲 Randomizer Urutan, Tanggal & Waktu</option>
+            <option value="1" class="bg-slate-900">Slide 2: 💻 Real Simulasi Canva & Google Slides</option>
+            <option value="2" class="bg-slate-900">Slide 3: 🔍 Deep-Dive Peran Google Slides</option>
+            <option value="3" class="bg-slate-900">Slide 4: 🚀 Cover Presentasi</option>
+            <option value="4" class="bg-slate-900">Slide 5: 👥 Anggota Kelompok (3D View)</option>
+            <option value="5" class="bg-slate-900">Slide 6: ⏳ Sejarah & Evolusi Informatika</option>
+            <option value="6" class="bg-slate-900">Slide 7: ⚡ Fungsi Utama Informatika</option>
+            <option value="7" class="bg-slate-900">Slide 8: 🌐 Manfaat Informatika di Dunia Nyata</option>
+            <option value="8" class="bg-slate-900">Slide 9: 💻 Algoritma & Simulator Koding</option>
+            <option value="9" class="bg-slate-900">Slide 10: 🎮 10 Mini-Games IT & Keyboard HUD</option>
+            <option value="10" class="bg-slate-900">Slide 11: 📊 Dashboard Kesimpulan</option>
+            <option value="11" class="bg-slate-900">Slide 12: 🎉 Penutup, WA Kontak & Grup Kelas 7</option>
+          </select>
+        </div>
+
+        <span id="slide-indicator" class="text-xs font-mono font-black bg-cyan-950 text-cyan-400 px-3 py-1.5 rounded-xl border border-cyan-500/40">
+          01 / 12
+        </span>
+
+        <button onclick="toggleHelpModal()" class="p-2 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl text-xs font-mono font-bold" title="Petunjuk Navigasi">
+          <i class="fa-solid fa-keyboard"></i>
+        </button>
+
+        <button onclick="toggleFullscreen()" class="p-2 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xl text-xs font-mono font-bold" title="Layar Penuh">
+          <i class="fa-solid fa-expand"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="w-full bg-slate-900 h-1.5 mt-2.5 rounded-full overflow-hidden border border-slate-800">
+      <div id="top-progress-bar" class="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 h-full transition-all duration-300 w-[8.33%]"></div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-1 flex flex-col justify-center">
+
+    <section id="slide-0" class="slide-content active flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-dice text-xs"></i> Modul 01 • Interactive Randomizer Tool
+        </span>
+        <h2 class="text-2xl md:text-4xl font-black text-white glow-cyan">Pengacak Urutan Tampil Presentasi & Jadwal Waktu</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Masukkan daftar kelompok serta daftar tanggal & waktu tampil, lalu klik acak untuk memasangkan secara otomatis!</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Input Form Section (2 Textboxes) -->
+        <div class="lg:col-span-5 glass-panel p-5 rounded-2xl border border-slate-700 space-y-4">
+          
+          <!-- Box 1: Kelompok -->
+          <div>
+            <label class="block text-xs font-mono font-black text-cyan-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-users text-cyan-400"></i>
+              👥 DAFTAR KELOMPOK (8 KELOMPOK):
+            </label>
+            <textarea id="randomizer-input-groups" rows="8" class="w-full bg-slate-900 border-2 border-cyan-500/60 rounded-xl p-3 text-xs md:text-sm font-mono text-cyan-300 font-bold focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 leading-relaxed" placeholder="Kelompok 1&#10;Kelompok 2&#10;Kelompok 3&#10;Kelompok 4&#10;Kelompok 5&#10;Kelompok 6&#10;Kelompok 7&#10;Kelompok 8"></textarea>
+            <p class="text-xs text-slate-400 font-mono mt-1 font-bold">*Satu kelompok per baris.</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-mono font-black text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-calendar-day text-amber-400"></i>
+              📅 DAFTAR TANGGAL & WAKTU PRESENTASI:
+            </label>
+            <textarea id="randomizer-input-datetime" rows="5" class="w-full bg-slate-900 border-2 border-amber-500/60 rounded-xl p-3 text-xs md:text-sm font-mono text-amber-300 font-bold focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 leading-relaxed" placeholder="Senin, 02 Nov 2026 - 08:00 - 08:30 WIB&#10;Senin, 02 Nov 2026 - 08:30 - 09:00 WIB..."></textarea>
+            <p class="text-xs text-slate-400 font-mono mt-1 font-bold">*Satu slot tanggal & waktu per baris.</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="pt-2 flex flex-col gap-2">
+            <button onclick="runRandomizer3Box()" class="w-full py-4 bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-slate-950 font-black text-sm md:text-base rounded-xl shadow-lg shadow-cyan-500/30 active:scale-98 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-shuffle text-lg"></i> ACAK URUTAN & JADWAL SEKARANG
+            </button>
+
+            <button onclick="resetRandomizer3Box()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 rounded-xl text-xs font-mono font-bold transition-colors">
+              <i class="fa-solid fa-rotate-left"></i> Reset Ke Default
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Output Display Section -->
+        <div class="lg:col-span-7 glass-panel p-5 rounded-2xl border border-slate-700 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-700 pb-3">
+              <div>
+                <h3 class="font-black text-lg text-white flex items-center gap-2">
+                  <i class="fa-solid fa-square-poll-vertical text-purple-400"></i> HASIL ACAKAN URUTAN TAMPIL
+                </h3>
+                <p id="randomizer-timestamp" class="text-xs font-mono text-slate-300 font-bold mt-0.5">
+                  Waktu Eksekusi: Belum Diacak
+                </p>
+              </div>
+
+              <div id="presentation-target-info" class="text-xs font-mono text-cyan-300 bg-cyan-950 border border-cyan-500/40 px-3 py-1.5 rounded-full font-bold">
+                Ready to randomize
+              </div>
+            </div>
+
+            <!-- Big Result Items Grid -->
+            <div id="randomizer-results" class="space-y-3 mt-4 max-h-[420px] overflow-y-auto pr-1">
+              <div class="p-12 text-center text-slate-300 font-mono text-sm border-2 border-dashed border-slate-700 rounded-2xl font-bold">
+                <i class="fa-solid fa-dice-d20 text-4xl mb-3 text-cyan-400 animate-spin-slow"></i>
+                <p>Klik tombol <b>"ACAK URUTAN & JADWAL SEKARANG"</b> untuk menampilkan hasil disini.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Export Toolbar -->
+          <div class="pt-3 border-t border-slate-700 flex flex-wrap items-center justify-between gap-3">
+            <span class="text-xs text-slate-300 font-mono font-bold hidden sm:inline">Export Hasil Acakan:</span>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button onclick="copyResultsWA()" class="flex-1 sm:flex-none px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl shadow-lg shadow-emerald-600/25 active:scale-95 transition-all flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-base"></i> Salin ke WhatsApp
+              </button>
+              <button onclick="downloadResultsTxt()" class="flex-1 sm:flex-none px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-100 font-black text-xs rounded-xl border border-slate-600 active:scale-95 transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-download text-base"></i> Unduh (.TXT)
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 2: TUTORIAL MEMBAGIKAN LINK (CANVA & GOOGLE SLIDES REAL EDITOR SIMULATION) -->
+    <section id="slide-1" class="slide-content flex-col gap-5">
+      <div class="border-b border-slate-700 pb-3 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-mono text-purple-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+            <i class="fa-solid fa-laptop-code text-xs"></i> Modul 02 • Real Editor Simulation
+          </span>
+          <h2 class="text-2xl md:text-3xl font-black text-white glow-purple">Simulasi Nyata Cara Membagikan Link Presentasi</h2>
+          <p class="text-slate-300 text-xs md:text-sm mt-0.5 font-semibold">Praktikkan langsung pengubahan akses pada antarmuka editor Canva & Google Slides di bawah ini!</p>
+        </div>
+
+        <!-- Platform Switcher Tabs -->
+        <div class="flex items-center gap-2">
+          <button id="btn-guide-canva" onclick="switchGuidePlatform('canva')" class="px-5 py-2.5 rounded-xl text-xs font-black border transition-all flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-purple-400 shadow-lg shadow-purple-500/20">
+            <i class="fa-solid fa-palette"></i> Canva Editor Mode
+          </button>
+          <button id="btn-guide-slides" onclick="switchGuidePlatform('slides')" class="px-5 py-2.5 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all flex items-center gap-2">
+            <i class="fa-solid fa-file-powerpoint"></i> Google Slides Mode
+          </button>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Guidance Bar -->
+      <div class="glass-panel p-3.5 rounded-2xl border border-slate-700 flex flex
+      -wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 text-xs md:text-sm font-mono">
+          <span class="text-slate-300 font-bold">Progres Langkah:</span>
+          <span id="guide-step-indicator" class="text-cyan-300 font-black bg-cyan-950 border border-cyan-500/40 px-3 py-1 rounded-full">
+            Langkah 1/4: Klik Tombol "Bagikan" (Share) ↗️
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="testIncognitoModal()" class="px-3.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-mono text-xs rounded-xl border border-amber-500/50 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-user-ninja"></i> Tes Mode Incognito
+          </button>
+          <button onclick="resetMockSimulation()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs rounded-xl border border-slate-600 font-bold">
+            <i class="fa-solid fa-rotate-left"></i> Reset Simulasi
+          </button>
+        </div>
+      </div>
+
+      <!-- REALISTIC MOCK EDITOR CONTAINER -->
+      <div class="relative w-full rounded-2xl border-2 border-slate-700 bg-slate-900 overflow-hidden shadow-2xl min-h-[480px] flex flex-col">
+        
+        <!-- ================= CANVA REAL MOCK EDITOR ================= -->
+        <div id="canva-mock-wrapper" class="flex flex-col flex-1 bg-[#f2f3f5] text-slate-900 font-sans">
+          
+          <!-- Canva Top App Bar -->
+          <div class="h-12 bg-[#00c4cc] bg-gradient-to-r from-[#00c4cc] via-[#7d2ae8] to-[#8b5cf6] px-4 flex items-center justify-between text-white text-xs select-none shadow">
+            <div class="flex items-center gap-3 font-extrabold">
+              <div class="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center font-black text-sm">C</div>
+              <span class="hover:bg-white/10 px-2 py-1 rounded cursor-pointer">File</span>
+              <span class="hover:bg-white/10 px-2 py-1 rounded cursor-pointer hidden sm:inline">Resize</span>
+              <span class="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-mono font-bold">Editing ✓</span>
+            </div>
+
+            <div class="font-black text-sm truncate max-w-[180px] sm:max-w-xs">Untitled design - Presentation</div>
+
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-xs shadow">IM</div>
+              <button onclick="openCanvaShareModal()" id="canva-share-btn-top" class="px-4 py-1.5 bg-white text-[#7d2ae8] hover:bg-purple-50 font-black rounded-lg shadow transition-all flex items-center gap-1.5 animate-pulse">
+                <i class="fa-solid fa-share-nodes"></i> Share
+              </button>
+            </div>
+          </div>
+
+          <!-- Canva Workspace Body -->
+          <div class="flex flex-1 relative overflow-hidden">
+            <!-- Left Sidebar Tools -->
+            <div class="w-16 bg-[#0e131f] text-slate-300 flex flex-col items-center py-3 gap-4 text-xs font-bold shrink-0">
+              <div class="flex flex-col items-center gap-1 text-cyan-400 cursor-pointer"><i class="fa-solid fa-border-all text-base"></i>Templates</div>
+              <div class="flex flex-col items-center gap-1 hover:text-white cursor-pointer"><i class="fa-solid fa-shapes text-base"></i>Elements</div>
+              <div class="flex flex-col items-center gap-1 hover:text-white cursor-pointer"><i class="fa-solid fa-font text-base"></i>Text</div>
+              <div class="flex flex-col items-center gap-1 hover:text-white cursor-pointer"><i class="fa-solid fa-cloud-arrow-up text-base"></i>Uploads</div>
+            </div>
+
+            <!-- Left Template Thumbnails Panel -->
+            <div class="w-48 bg-[#181e29] border-r border-slate-800 p-3 hidden sm:flex flex-col gap-3 text-slate-200 text-xs shrink-0">
+              <span class="font-black text-white text-xs font-mono">Recently used</span>
+              <div class="w-full h-20 rounded-lg bg-purple-900/80 border border-purple-400 p-2 flex flex-col justify-end text-xs font-black text-white">THE MEMORY GAME</div>
+              <div class="w-full h-20 rounded-lg bg-blue-900/80 border border-blue-400 p-2 flex flex-col justify-end text-xs font-black text-white">CREATIVE PORTFOLIO</div>
+            </div>
+
+            <!-- Main Canvas Center Area -->
+            <div class="flex-1 bg-[#cbd5e1] p-6 flex items-center justify-center relative overflow-auto">
+              <div class="w-full max-w-xl aspect-[16/9] bg-white rounded-xl shadow-2xl p-8 flex flex-col items-center justify-center text-center border-2 border-slate-400">
+                <span class="text-xs font-mono font-black text-purple-700 bg-purple-100 border border-purple-300 px-3 py-1 rounded-full mb-3">CANVA PRESENTATION SLIDE</span>
+                <h3 class="text-3xl font-black text-slate-900 tracking-tight">DUNIA INFORMATIKA</h3>
+                <p class="text-sm font-bold text-slate-600 mt-2">Materi Pembelajaran Interaktif Kelas 7</p>
+              </div>
+
+              <!-- REAL CANVA SHARE DESIGN POPOVER MODAL -->
+              <div id="canva-share-modal" class="absolute top-3 right-3 w-80 bg-white rounded-2xl shadow-2xl border-2 border-purple-400 p-4 text-slate-900 space-y-3 z-30 transition-all transform duration-300">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                  <h4 class="font-black text-sm text-slate-900">Share design</h4>
+                  <button onclick="closeCanvaShareModal()" class="text-slate-500 hover:text-slate-800 text-xs"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Access Level Dropdown Section -->
+                <div>
+                  <label class="block text-xs font-black text-slate-700 mb-1">Access level</label>
+                  <div class="relative">
+                    <select id="canva-access-select" onchange="onCanvaAccessChange()" class="w-full bg-slate-50 border-2 border-purple-500 rounded-xl p-2.5 text-xs font-black text-slate-900 focus:outline-none focus:ring-2 focus:ring-purple-500 pr-8 cursor-pointer">
+                      <option value="locked">🔒 Only you can access</option>
+                      <option value="public">🌐 Anyone with the link</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Role Selector Dropdown (When Public) -->
+                <div id="canva-role-wrapper" class="hidden space-y-1">
+                  <label class="block text-xs font-black text-purple-800">Peran Pengunjung (Role)</label>
+                  <select id="canva-role-select" onchange="onCanvaRoleChange()" class="w-full bg-purple-50 border-2 border-purple-400 rounded-xl p-2 text-xs font-black text-purple-950 cursor-pointer">
+                    <option value="view" selected>👁️ Can view (Bisa melihat)</option>
+                    <option value="edit">✏️ Can edit (Bisa mengedit)</option>
+                  </select>
+                </div>
+
+                <!-- Big Purple Copy Link Button -->
+                <button id="canva-copy-btn" onclick="executeCanvaCopyLink()" class="w-full py-3 bg-[#8b5cf6] hover:bg-[#7c3aed] text-white font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-link"></i> Copy link
+                </button>
+
+                <!-- Grid Shortcut Icons -->
+                <div class="grid grid-cols-4 gap-2 text-center text-xs font-bold text-slate-700 pt-1 border-t border-slate-200">
+                  <div class="p-2 rounded-lg hover:bg-slate-100 cursor-pointer flex flex-col items-center gap-1"><i class="fa-solid fa-download text-slate-800 text-sm"></i>Download</div>
+                  <div class="p-2 rounded-lg hover:bg-slate-100 cursor-pointer flex flex-col items-center gap-1"><i class="fa-solid fa-users text-slate-800 text-sm"></i>Assign</div>
+                  <div class="p-2 rounded-lg hover:bg-slate-100 cursor-pointer flex flex-col items-center gap-1"><i class="fa-solid fa-tv text-slate-800 text-sm"></i>Present</div>
+                  <div class="p-2 rounded-lg hover:bg-slate-100 cursor-pointer flex flex-col items-center gap-1"><i class="fa-solid fa-ellipsis text-slate-800 text-sm"></i>See all</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= GOOGLE SLIDES REAL MOCK EDITOR ================= -->
+        <div id="slides-mock-wrapper" class="flex flex-col flex-1 bg-[#f8f9fa] text-slate-900 font-sans hidden">
+          
+          <!-- Google Slides Header Bar -->
+          <div class="bg-white border-b-2 border-slate-300 px-4 py-2 flex flex-wrap items-center justify-between gap-2 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded bg-amber-500 text-white flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-file-powerpoint"></i>
+              </div>
+              <div>
+                <div class="font-black text-sm text-slate-900 flex items-center gap-2">
+                  Untitled presentation <i class="fa-regular fa-star text-slate-500 text-xs"></i>
+                </div>
+                <div class="flex items-center gap-3 text-xs text-slate-700 font-bold mt-0.5">
+                  <span class="hover:bg-slate-100 px-1 rounded cursor-pointer">File</span>
+                  <span class="hover:bg-slate-100 px-1 rounded cursor-pointer">Edit</span>
+                  <span class="hover:bg-slate-100 px-1 rounded cursor-pointer">View</span>
+                  <span class="hover:bg-slate-100 px-1 rounded cursor-pointer">Insert</span>
+                  <span class="hover:bg-slate-100 px-1 rounded cursor-pointer">Format</span>
+                  <span class="hover:bg-slate-100 px-1 rounded cursor-pointer">Slide</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-black text-xs rounded-full flex items-center gap-1">
+                Slideshow <i class="fa-solid fa-caret-down text-xs"></i>
+              </button>
+              <!-- Blue Google Share Button -->
+              <button onclick="openGoogleShareModal()" id="google-share-btn-top" class="px-5 py-2 bg-[#1a73e8] hover:bg-blue-700 text-white font-black text-xs rounded-full shadow transition-all flex items-center gap-1.5 animate-pulse">
+                <i class="fa-solid fa-lock text-xs"></i> Share
+              </button>
+            </div>
+          </div>
+
+          <!-- Google Slides Body Editor -->
+          <div class="flex flex-1 relative overflow-hidden">
+            <!-- Left Thumbnails -->
+            <div class="w-36 bg-[#f1f3f4] border-r-2 border-slate-300 p-3 flex flex-col gap-2 shrink-0">
+              <div class="w-full aspect-[16/9] bg-white border-2 border-blue-600 rounded p-2 text-xs font-black text-slate-800 shadow-sm">
+                1. Title Slide
+              </div>
+            </div>
+
+            <!-- Slide Canvas Editor -->
+            <div class="flex-1 bg-[#cbd5e1] p-6 flex items-center justify-center relative overflow-auto">
+              <div class="w-full max-w-xl aspect-[16/9] bg-white rounded border-2 border-slate-300 shadow-xl p-8 flex flex-col items-center justify-center text-center">
+                <h2 class="text-3xl font-black text-slate-900">Click to add title</h2>
+                <p class="text-base font-bold text-slate-600 mt-2">Click to add subtitle</p>
+              </div>
+
+              <!-- REAL GOOGLE SLIDES SHARE MODAL POPUP -->
+              <div id="google-share-modal" class="absolute inset-0 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 z-30 transition-all">
+                <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-5 text-slate-900 space-y-4 border-2 border-blue-500">
+                  <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+                    <h4 class="font-black text-base text-slate-900 flex items-center gap-2">
+                      <i class="fa-solid fa-user-plus text-blue-600"></i> Share "Untitled presentation"
+                    </h4>
+                    <button onclick="closeGoogleShareModal()" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-xmark"></i></button>
+                  </div>
+
+                  <!-- General Access Dropdown -->
+                  <div class="space-y-2 bg-slate-50 p-3.5 rounded-xl border-2 border-slate-300">
+                    <label class="block text-xs font-black text-slate-800">General access (Akses Umum)</label>
+                    <select id="google-access-select" onchange="onGoogleAccessChange()" class="w-full bg-white border-2 border-blue-600 rounded-lg p-2.5 text-xs font-black text-slate-900 cursor-pointer">
+                      <option value="locked">🔒 Restricted (Hanya orang yang ditambahkan)</option>
+                      <option value="public">🌐 Anyone with the link (Siapa saja yang memiliki link)</option>
+                    </select>
+
+                    <div id="google-role-wrapper" class="hidden pt-2 border-t border-slate-200">
+                      <label class="block text-xs font-black text-blue-900 mb-1">Peran Pengakses (Role)</label>
+                      <select id="google-role-select" onchange="onGoogleRoleChange()" class="w-full bg-blue-50 border-2 border-blue-400 rounded-lg p-2.5 text-xs font-black text-blue-950 cursor-pointer">
+                        <option value="view" selected>👁️ Viewer (Pengakses Lihat - Aman)</option>
+                        <option value="comment">💬 Commenter (Pengomentar)</option>
+                        <option value="edit">✏️ Editor (Bisa Mengedit)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Action Buttons Row -->
+                  <div class="flex items-center justify-between pt-2">
+                    <button id="google-copy-btn" onclick="executeGoogleCopyLink()" class="px-4 py-2.5 bg-slate-100 hover:bg-blue-50 text-blue-800 font-black text-xs rounded-full border-2 border-blue-400 flex items-center gap-1.5">
+                      <i class="fa-solid fa-link"></i> Copy link
+                    </button>
+
+                    <button onclick="closeGoogleShareModal()" class="px-6 py-2.5 bg-[#1a73e8] hover:bg-blue-700 text-white font-black text-xs rounded-full shadow">
+                      Done
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 3: TUTORIAL KHUSUS GOOGLE SLIDES (DEEP DIVE & CHECKLIST) -->
+    <section id="slide-2" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-sliders text-xs"></i> Modul 03 • Deep-Dive Permissions
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-cyan">Pengaturan Peran Pengguna Google Slides</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Pahami perbedaan antara Viewer, Commenter, dan Editor agar file presentasimu tetap aman!</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Card 1: Viewer -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 relative hover:border-cyan-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-cyan-400 font-bold">
+            <i class="fa-solid fa-eye text-xl"></i>
+          </div>
+          <h3 class="font-black text-white text-lg">1. Pengakses Lihat (Viewer)</h3>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">
+            Pengunjung hanya bisa **melihat slide** tanpa bisa mengubah tulisan atau menghapus gambar. Cocok untuk dikirim ke audiens umum atau guru saat penilaian.
+          </p>
+          <span class="inline-block text-xs font-mono bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-bold">Paling Aman 🔒</span>
+        </div>
+
+        <!-- Card 2: Commenter -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 relative hover:border-amber-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-amber-950 border border-amber-500/50 flex items-center justify-center text-amber-400 font-bold">
+            <i class="fa-solid fa-comment-dots text-xl"></i>
+          </div>
+          <h3 class="font-black text-white text-lg">2. Pengomentar (Commenter)</h3>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">
+            Pengunjung bisa melihat slide DAN meninggalkan **catatan revisi** di samping slide. Sangat bagus untuk sesi konsultasi materi dengan kelompok lain.
+          </p>
+          <span class="inline-block text-xs font-mono bg-amber-950 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full font-bold">Untuk Review 💬</span>
+        </div>
+
+        <!-- Card 3: Editor -->
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 relative hover:border-rose-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-rose-950 border border-rose-500/50 flex items-center justify-center text-rose-400 font-bold">
+            <i class="fa-solid fa-pen-to-square text-xl"></i>
+          </div>
+          <h3 class="font-black text-white text-lg">3. Editor (Full Control)</h3>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">
+            Pengunjung bisa **mengubah seluruh isi slide**, menambah teks, atau menghapus halaman. HANYA berikan akses ini kepada teman satu kelompokmu!
+          </p>
+          <span class="inline-block text-xs font-mono bg-rose-950 text-rose-300 border border-rose-500/40 px-3 py-1 rounded-full font-bold">Khusus Anggota ⚠️</span>
+        </div>
+      </div>
+
+      <!-- Interactive Share Checklist -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="font-black text-white text-base flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-emerald-400"></i> Checklist Kesiapan Link Google Slides:
+          </h4>
+          <span id="checklist-status" class="text-xs font-mono text-slate-300 font-bold">Belum Siap (0/3)</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs md:text-sm font-mono font-bold">
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer hover:border-slate-500">
+            <input type="checkbox" onchange="updateShareChecklist()" class="w-4 h-4 rounded border-slate-600 text-cyan-500 focus:ring-0">
+            <span>Akses umum: Public Link</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer hover:border-slate-500">
+            <input type="checkbox" onchange="updateShareChecklist()" class="w-4 h-4 rounded border-slate-600 text-cyan-500 focus:ring-0">
+            <span>Role disesuaikan (Viewer/Editor)</span>
+          </label>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer hover:border-slate-500">
+            <input type="checkbox" onchange="updateShareChecklist()" class="w-4 h-4 rounded border-slate-600 text-cyan-500 focus:ring-0">
+            <span>Sudah dites di Browser HP</span>
+          </label>
+        </div>
+
+        <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden border border-slate-700 mt-2">
+          <div id="checklist-progress" class="bg-gradient-to-r from-cyan-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: COVER PRESENTASI INFORMATIKA -->
+    <section id="slide-3" class="slide-content flex-col items-center justify-center text-center py-10 gap-6">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 rounded-3xl blur-2xl opacity-30 animate-glow-pulse"></div>
+        <div class="relative glass-panel p-8 md:p-12 rounded-3xl border-2 border-slate-700 max-w-3xl space-y-6">
+          
+          <span class="px-4 py-1.5 rounded-full bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-mono text-xs font-black uppercase tracking-widest inline-flex items-center gap-2">
+            <i class="fa-solid fa-code text-xs"></i> Presentasi Edukasi & Teknologi
+          </span>
+
+          <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight">
+            MENJELAJAH <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 glow-cyan">DUNIA INFORMATIKA</span>
+          </h1>
+
+          <p class="text-slate-200 text-sm md:text-lg max-w-xl mx-auto leading-relaxed font-bold">
+            Memahami Fondasi Komputasi, Algoritma, Sejarah Teknologi, dan Penerapan Praktis di Era Kecerdasan Buatan (AI) dengan Sentuhan Interaktif.
+          </p>
+
+          <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+            <button onclick="goToSlide(4)" class="px-8 py-4 bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-slate-950 font-black text-sm md:text-base rounded-2xl shadow-xl shadow-cyan-500/30 active:scale-95 transition-all flex items-center gap-2">
+              🚀 MULAI PRESENTASI <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button onclick="goToSlide(0)" class="px-6 py-4 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-600 font-black text-sm md:text-base rounded-2xl active:scale-95 transition-all flex items-center gap-2">
+              <i class="fa-solid fa-dice"></i> Randomizer Tool
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: PENGENALAN ANGGOTA KELOMPOK (5 PERAN) -->
+    <section id="slide-4" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-pink-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-users text-xs"></i> Modul 05 • Tim Pengembang
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-purple">Tim Di Balik Presentasi Ini</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Klik kartu profil anggota di bawah ini untuk melihat detail statistik & quote favorit!</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <!-- Member 1: Penanggung Jawab -->
+        <div onclick="openMemberModal(0)" class="glass-card p-4 rounded-2xl border border-slate-700 cursor-pointer text-center flex flex-col items-center space-y-3 group">
+          <div class="w-16 h-16 rounded-2xl bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-cyan-400 text-2xl group-hover:scale-110 transition-transform font-bold">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-white text-base">Budi Santoso</h4>
+            <span class="text-xs font-mono text-cyan-400 font-bold block mt-0.5">Penanggung Jawab</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-snug font-semibold">Mengkoordinasikan seluruh tugas & timeline presentasi.</p>
+        </div>
+
+        <!-- Member 2: Animasi Slide -->
+        <div onclick="openMemberModal(1)" class="glass-card p-4 rounded-2xl border border-slate-700 cursor-pointer text-center flex flex-col items-center space-y-3 group">
+          <div class="w-16 h-16 rounded-2xl bg-purple-950 border border-purple-500/50 flex items-center justify-center text-purple-400 text-2xl group-hover:scale-110 transition-transform font-bold">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-white text-base">Siti Rahma</h4>
+            <span class="text-xs font-mono text-purple-400 font-bold block mt-0.5">Animasi Slide</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-snug font-semibold">Merancang transisi & efek gerak interaktif.</p>
+        </div>
+
+        <!-- Member 3: Pembuat Elemen & Visual -->
+        <div onclick="openMemberModal(2)" class="glass-card p-4 rounded-2xl border border-slate-700 cursor-pointer text-center flex flex-col items-center space-y-3 group">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-950 border border-emerald-500/50 flex items-center justify-center text-emerald-400 text-2xl group-hover:scale-110 transition-transform font-bold">
+            <i class="fa-solid fa-palette"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-white text-base">Andi Wijaya</h4>
+            <span class="text-xs font-mono text-emerald-400 font-bold block mt-0.5">Visual & Elemen</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-snug font-semibold">Mendesain palet warna cyberpunk & icon visual.</p>
+        </div>
+
+        <!-- Member 4: Mencari Materi -->
+        <div onclick="openMemberModal(3)" class="glass-card p-4 rounded-2xl border border-slate-700 cursor-pointer text-center flex flex-col items-center space-y-3 group">
+          <div class="w-16 h-16 rounded-2xl bg-pink-950 border border-pink-500/50 flex items-center justify-center text-pink-400 text-2xl group-hover:scale-110 transition-transform font-bold">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-white text-base">Maya Putri</h4>
+            <span class="text-xs font-mono text-pink-400 font-bold block mt-0.5">Pencari Materi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-snug font-semibold">Riset fakta valid & referensi sejarah komputasi.</p>
+        </div>
+
+        <!-- Member 5: Merangkum Materi -->
+        <div onclick="openMemberModal(4)" class="glass-card p-4 rounded-2xl border border-slate-700 cursor-pointer text-center flex flex-col items-center space-y-3 group">
+          <div class="w-16 h-16 rounded-2xl bg-amber-950 border border-amber-500/50 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition-transform font-bold">
+            <i class="fa-solid fa-file-contract"></i>
+          </div>
+          <div>
+            <h4 class="font-black text-white text-base">Rian Kurnia</h4>
+            <span class="text-xs font-mono text-amber-400 font-bold block mt-0.5">Merangkum Materi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-snug font-semibold">Menyederhanakan konsep rumit menjadi poin ringkas.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 6: SEJARAH INFORMATIKA (INTERACTIVE TIMELINE) -->
+    <section id="slide-5" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-timeline text-xs"></i> Modul 06 • Garis Waktu Perkembangan
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-cyan">Sejarah & Evolusi Informatika</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Garis waktu perjalanan teknologi dari mesin mekanik hingga kecerdasan buatan modern.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+        <div onclick="showTimelineDetail(0)" class="glass-panel p-5 rounded-2xl border border-slate-700 cursor-pointer hover:border-cyan-400 transition-all space-y-2">
+          <span class="text-xs font-mono font-black text-cyan-400">Tahun 1800-an</span>
+          <h4 class="font-black text-white text-lg">Algoritma Pertama</h4>
+          <p class="text-slate-300 text-xs md:text-sm font-semibold">Ada Lovelace merancang algoritma mesin Analytical Engine Babbage.</p>
+        </div>
+
+        <div onclick="showTimelineDetail(1)" class="glass-panel p-5 rounded-2xl border border-slate-700 cursor-pointer hover:border-purple-400 transition-all space-y-2">
+          <span class="text-xs font-mono font-black text-purple-400">Tahun 1940-an</span>
+          <h4 class="font-black text-white text-lg">Generasi Komputer</h4>
+          <p class="text-slate-300 text-xs md:text-sm font-semibold">Komputer ENIAC diciptakan menggunakan ribuan tabung hampa raksasa.</p>
+        </div>
+
+        <div onclick="showTimelineDetail(2)" class="glass-panel p-5 rounded-2xl border border-slate-700 cursor-pointer hover:border-emerald-400 transition-all space-y-2">
+          <span class="text-xs font-mono font-black text-emerald-400">Tahun 1990-an</span>
+          <h4 class="font-black text-white text-lg">Lahirnya World Wide Web</h4>
+          <p class="text-slate-300 text-xs md:text-sm font-semibold">Tim Berners-Lee menemukan WWW, menghubungkan seluruh dunia secara digital.</p>
+        </div>
+
+        <div onclick="showTimelineDetail(3)" class="glass-panel p-5 rounded-2xl border border-slate-700 cursor-pointer hover:border-pink-400 transition-all space-y-2">
+          <span class="text-xs font-mono font-black text-pink-400">Era 2020+</span>
+          <h4 class="font-black text-white text-lg">Generative AI</h4>
+          <p class="text-slate-300 text-xs md:text-sm font-semibold">Era AI Superintelligence, Cloud Computing & Quantum Computing.</p>
+        </div>
+      </div>
+
+      <div id="timeline-detail-box" class="glass-panel p-4 rounded-2xl border border-slate-700 text-xs md:text-sm font-mono text-cyan-300 flex items-center gap-3 font-bold">
+        <i class="fa-solid fa-circle-info text-cyan-400 text-lg shrink-0"></i>
+        <span>Klik salah satu era di atas untuk melihat detail sejarah unik!</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: FUNGSI INFORMATIKA (INTERACTIVE CARDS) -->
+    <section id="slide-6" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-purple-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-gears text-xs"></i> Modul 07 • Fungsi Utama
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-purple">Fungsi Utama Informatika dalam Sistem</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">4 Pilar fungsional pengolahan data menjadi informasi yang berguna bagi kehidupan.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 hover:border-cyan-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-cyan-400 font-bold">
+            <i class="fa-solid fa-keyboard text-xl"></i>
+          </div>
+          <h4 class="font-black text-white text-lg">1. Input & Capture</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Menangkap data mentah dari keyboard, sensor IoT, kamera, atau barcode scanner.</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 hover:border-purple-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-purple-950 border border-purple-500/50 flex items-center justify-center text-purple-400 font-bold">
+            <i class="fa-solid fa-cpu text-xl"></i>
+          </div>
+          <h4 class="font-black text-white text-lg">2. Processing</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Mengolah data mentah menggunakan logika matematika & algoritma terstruktur.</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 hover:border-emerald-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-emerald-950 border border-emerald-500/50 flex items-center justify-center text-emerald-400 font-bold">
+            <i class="fa-solid fa-database text-xl"></i>
+          </div>
+          <h4 class="font-black text-white text-lg">3. Storage</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Menyimpan data secara permanen di Database atau Cloud Storage agar aman.</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 hover:border-pink-400 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-pink-950 border border-pink-500/50 flex items-center justify-center text-pink-400 font-bold">
+            <i class="fa-solid fa-desktop text-xl"></i>
+          </div>
+          <h4 class="font-black text-white text-lg">4. Output & Display</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Menampilkan hasil olahan dalam bentuk Grafik Dashboard, Laporan, atau Visual UI.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: MANFAAT INFORMATIKA (GRID INFOGRAFIS) -->
+    <section id="slide-7" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-earth-americas text-xs"></i> Modul 08 • Manfaat Nyata
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-cyan">Manfaat Teknologi Informatika di Dunia Nyata</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Penerapan teknologi yang mentransformasi efisiensi kehidupan sehari-hari.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <i class="fa-solid fa-hospital-user text-3xl text-cyan-400"></i>
+            <span class="text-xs font-mono text-cyan-400 font-bold">Sektor Kesehatan</span>
+          </div>
+          <h4 class="font-black text-white text-lg">Telemedicine & AI Diagnosis</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Dokter bisa memantau kondisi pasien dari jarak jauh dan AI mendeteksi penyakit lebih cepat.</p>
+          <button onclick="boostMetric(this)" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-cyan-300 font-mono text-xs font-bold rounded-xl border border-slate-700">
+            Efisiensi: <span class="metric-val">+85%</span> (Klik Boost ✨)
+          </button>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <i class="fa-solid fa-graduation-cap text-3xl text-purple-400"></i>
+            <span class="text-xs font-mono text-purple-400 font-bold">Sektor Pendidikan</span>
+          </div>
+          <h4 class="font-black text-white text-lg">E-Learning & Interactive SPA</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Siswa belajar kapan saja tanpa batasan geografis dengan materi interaktif modern.</p>
+          <button onclick="boostMetric(this)" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-purple-300 font-mono text-xs font-bold rounded-xl border border-slate-700">
+            Aksesibilitas: <span class="metric-val">+95%</span> (Klik Boost ✨)
+          </button>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <i class="fa-solid fa-wallet text-3xl text-emerald-400"></i>
+            <span class="text-xs font-mono text-emerald-400 font-bold">Sektor Ekonomi</span>
+          </div>
+          <h4 class="font-black text-white text-lg">E-Commerce & Digital Payment</h4>
+          <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-semibold">Transaksi instan pakai QRIS tanpa perlu dompet fisik, mempercepat perputaran ekonomi.</p>
+          <button onclick="boostMetric(this)" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-emerald-300 font-mono text-xs font-bold rounded-xl border border-slate-700">
+            Kecepatan: <span class="metric-val">10x Lipat</span> (Klik Boost ✨)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: CONTOH ALGORITMA & SIMULATOR KODING -->
+    <section id="slide-8" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-pink-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-code text-xs"></i> Modul 09 • Code Playground
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-purple">Contoh Algoritma & Simulator Koding</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Uji coba eksekusi logika program sederhana secara langsung di browser!</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-6 glass-panel p-5 rounded-2xl border border-slate-700 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-200 font-bold">Editor Code JavaScript:</span>
+            <div class="flex gap-2">
+              <button onclick="loadCodePreset('kopi')" class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-cyan-300 rounded-lg text-xs font-mono border border-slate-700 font-bold">☕ Preset Kopi</button>
+              <button onclick="loadCodePreset('loop')" class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-purple-300 rounded-lg text-xs font-mono border border-slate-700 font-bold">🔄 Preset Loop</button>
+            </div>
+          </div>
+          <textarea id="simulator-code" rows="8" class="w-full bg-slate-950 border-2 border-slate-700 rounded-xl p-3 text-xs md:text-sm font-mono text-cyan-300 font-bold focus:outline-none focus:border-cyan-500 leading-relaxed">let airPanas = true;
+let adaKopi = true;
+
+if (airPanas && adaKopi) {
+  console.log("☕ Kopi Hitam Siap Menemanimu Ngoding!");
+} else {
+  console.log("💧 Air Belum Mendidih!");
+}</textarea>
+          <button onclick="runCodeSimulator()" class="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-slate-950 font-black text-xs md:text-sm rounded-xl shadow-lg">
+            ▶️ JALANKAN PROGRAM
+          </button>
+        </div>
+
+        <div class="lg:col-span-6 glass-panel p-5 rounded-2xl border border-slate-700 space-y-3 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-mono text-emerald-400 font-bold block mb-2">Terminal Output Execution:</span>
+            <div id="simulator-output" class="p-4 rounded-xl bg-slate-950 border border-slate-700 font-mono text-xs md:text-sm text-slate-200 font-bold min-h-[160px] whitespace-pre-wrap leading-relaxed">
+> Klik [JALANKAN PROGRAM] untuk melihat output logika kodinganmu...
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300 font-bold">
+            💡 <b>Logika Algoritma:</b> Komputer mengeksekusi instruksi dari atas ke bawah secara terurut sesuai kondisi variabel.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: 10 MINI-GAMES FUNNY IT & KEYBOARD CONTROLS -->
+    <section id="slide-9" class="slide-content flex-col gap-5">
+      <div class="border-b border-slate-700 pb-3 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs font-mono text-pink-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+            <i class="fa-solid fa-gamepad text-xs"></i> Modul 10 • 10 Mini-Games IT & Keyboard HUD
+          </span>
+          <h2 class="text-2xl md:text-3xl font-black text-white glow-purple">Koleksi 10 Mini-Game IT Berbasis Keyboard & Touch!</h2>
+          <p class="text-slate-300 text-xs md:text-sm mt-0.5 font-semibold">Gunakan **Tombol Keyboard Fizik** atau **Touch Control** pada layar untuk bermain secepat mungkin!</p>
+        </div>
+
+        <!-- Global Keyboard HUD Active Badge -->
+        <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl text-xs font-mono font-bold">
+          <span class="text-slate-300">Status Keyboard:</span>
+          <span id="keyboard-hud-status" class="text-emerald-400 font-bold">READY (Press Keys!)</span>
+        </div>
+      </div>
+
+      <!-- Game Tab Switcher Controls (10 Games) -->
+      <div class="flex flex-wrap items-center justify-center gap-2 max-w-full overflow-x-auto py-1">
+        <button id="tab-game-1" onclick="switchGameTab(1)" class="px-3.5 py-2 rounded-xl text-xs font-black transition-all border bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 border-cyan-400 shadow-lg shadow-cyan-500/20">
+          🧩 1. Puzzle Meme
+        </button>
+        <button id="tab-game-2" onclick="switchGameTab(2)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          🐛 2. Whack Bug
+        </button>
+        <button id="tab-game-3" onclick="switchGameTab(3)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          🃏 3. Memory Card 3D
+        </button>
+        <button id="tab-game-4" onclick="switchGameTab(4)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          ❓ 4. Kuis Error
+        </button>
+        <button id="tab-game-5" onclick="switchGameTab(5)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          🔐 5. Password Absurd
+        </button>
+        <button id="tab-game-6" onclick="switchGameTab(6)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          💥 6. Dev Clicker
+        </button>
+        <button id="tab-game-7" onclick="switchGameTab(7)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          ☕ 7. Tangkap Kopi
+        </button>
+        <button id="tab-game-8" onclick="switchGameTab(8)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          🔌 8. Colok LAN
+        </button>
+        <button id="tab-game-9" onclick="switchGameTab(9)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          🦖 9. Bug Runner
+        </button>
+        <button id="tab-game-10" onclick="switchGameTab(10)" class="px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all">
+          🎰 10. Roda Nasib
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Game Play Area Container -->
+        <div class="lg:col-span-7 glass-panel p-5 rounded-2xl border border-slate-700 flex flex-col justify-between min-h-[450px] relative overflow-hidden">
+          
+          <!-- GAME 1: PUZZLE POTONGAN INFORMATIKA -->
+          <div id="game-container-1" class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3 flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <span id="puzzle-moves" class="text-xs font-mono bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-black">Langkah: 0</span>
+                <span id="puzzle-timer" class="text-xs font-mono bg-purple-950 text-purple-300 border border-purple-500/40 px-3 py-1 rounded-full font-black">Waktu: 00:00</span>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="autoSolvePuzzle()" class="px-3 py-1.5 bg-emerald-950 hover:bg-emerald-900 text-emerald-300 text-xs rounded-xl font-mono font-bold border border-emerald-500/40">
+                  ✨ Auto Solve
+                </button>
+                <button onclick="togglePuzzleHint()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-xl font-mono font-bold border border-slate-600">
+                  <i class="fa-solid fa-eye text-cyan-400"></i> <span id="hint-btn-text">Petunjuk</span>
+                </button>
+                <button onclick="resetPuzzleGame()" class="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-300 text-xs rounded-xl font-mono font-bold border border-rose-500/40">
+                  <i class="fa-solid fa-rotate-right"></i> Acak
+                </button>
+              </div>
+            </div>
+
+            <div id="puzzle-hint-box" class="hidden p-3 bg-slate-950 rounded-2xl border border-cyan-500/50 text-center flex flex-col items-center">
+              <p class="text-xs font-mono text-cyan-300 mb-2 font-bold">Target Gambar Utuh:</p>
+              <div id="puzzle-reference-img" class="w-36 h-36 rounded-xl border-2 border-cyan-400 bg-cover bg-center shadow-lg"></div>
+            </div>
+
+            <div class="flex justify-center my-2">
+              <div id="puzzle-board" class="grid grid-cols-3 gap-1.5 p-2 bg-slate-950 rounded-2xl border-2 border-slate-700 shadow-2xl w-[270px] h-[270px] sm:w-[300px] sm:h-[300px]">
+              </div>
+            </div>
+
+            <div id="puzzle-status" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 font-bold text-center">
+              💡 Klik dua potongan berturut-turut untuk menukar posisinya!
+            </div>
+          </div>
+
+          <!-- GAME 2: PUKUL BUG KODING -->
+          <div id="game-container-2" class="space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+              <span id="whack-score" class="text-xs font-mono bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-full font-black">Skor: 0 Bug</span>
+              <span id="whack-timer" class="text-xs font-mono bg-rose-950 text-rose-300 border border-rose-500/40 px-3 py-1 rounded-full font-black">Waktu: 20s</span>
+              <button onclick="startWhackGame()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-lg">
+                ▶️ MULAI GAME
+              </button>
+            </div>
+
+            <p class="text-xs text-slate-300 text-center font-mono font-bold">Pukul Bug biasa 🐛 (+10) dan Golden Bug ⭐ (+20) yang bermunculan!</p>
+
+            <div id="whack-board" class="grid grid-cols-3 gap-3 p-3 bg-slate-950 rounded-2xl border border-slate-700 max-w-xs mx-auto">
+            </div>
+            
+            <div id="whack-status" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-cyan-300 font-bold text-center">
+              Tekan [MULAI GAME] untuk membasmi Bug!
+            </div>
+          </div>
+
+          <!-- GAME 3: MEMORY CARD MATCHING IT -->
+          <div id="game-container-3" class="space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+              <span id="memory-score" class="text-xs font-mono bg-purple-950 text-purple-300 border border-purple-500/40 px-3 py-1 rounded-full font-black">Pasangan: 0 / 6</span>
+              <button onclick="initMemoryGame()" class="px-4 py-2 bg-purple-500 hover:bg-purple-400 text-slate-950 font-black text-xs rounded-xl shadow-lg">
+                🔄 Ulang Kartu
+              </button>
+            </div>
+
+            <p class="text-xs text-slate-300 text-center font-mono font-bold">Buka kartu 3D dan cocokkan 6 pasang ikon IT yang sama!</p>
+
+            <div id="memory-board" class="grid grid-cols-4 gap-2.5 p-2 bg-slate-950 rounded-2xl border border-slate-700 max-w-md mx-auto min-h-[240px]">
+            </div>
+
+            <div id="memory-status" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-purple-300 font-bold text-center">
+              Temukan 6 pasang kartu identik!
+            </div>
+          </div>
+
+          <!-- GAME 4: KUIS TEBAK ERROR & SYNTAX -->
+          <div id="game-container-4" class="space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+              <span id="quiz-score" class="text-xs font-mono bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-black">Skor: 0</span>
+              
+              <div class="flex items-center gap-1">
+                <span class="text-xs font-mono text-slate-300 font-bold">Hotkey:</span>
+                <kbd id="k-a">A / 1</kbd><kbd id="k-b">B / 2</kbd><kbd id="k-c">C / 3</kbd><kbd id="k-d">D / 4</kbd>
+              </div>
+
+              <span id="quiz-progress" class="text-xs font-mono text-slate-300 font-bold">Pertanyaan 1/5</span>
+            </div>
+
+            <div id="quiz-box" class="space-y-3">
+            </div>
+          </div>
+
+          <!-- GAME 5: CHALLENGE PASSWORD ABSURD -->
+          <div id="game-container-5" class="space-y-4 hidden">
+            <div class="border-b border-slate-700 pb-2 flex justify-between items-center">
+              <div>
+                <h4 class="font-black text-sm text-white uppercase tracking-wider font-mono">🔐 Validator Password Absurd</h4>
+                <p class="text-xs text-slate-300 font-bold">Penuhi 5 aturan kocak di bawah atau klik tombol auto-isi!</p>
+              </div>
+              <button onclick="autoFillAbsurdPassword()" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 rounded-lg text-xs font-mono font-bold">
+                ✨ Auto Isi
+              </button>
+            </div>
+
+            <input type="text" id="absurd-pass-input" oninput="checkAbsurdPassword()" placeholder="Ketik password absurd disini..." class="w-full bg-slate-950 border-2 border-slate-700 rounded-xl p-3 text-xs md:text-sm text-cyan-300 font-mono font-bold focus:outline-none focus:border-cyan-500">
+
+            <div class="space-y-1.5 text-xs font-mono font-bold">
+              <div id="rule-1" class="p-2 rounded-xl bg-slate-900 border border-slate-700 text-rose-400">❌ 1. Panjang minimal 8 karakter</div>
+              <div id="rule-2" class="p-2 rounded-xl bg-slate-900 border border-slate-700 text-rose-400">❌ 2. Harus mengandung emoji kopi ☕</div>
+              <div id="rule-3" class="p-2 rounded-xl bg-slate-900 border border-slate-700 text-rose-400">❌ 3. Harus memuat kata "CSS" (huruf kapital)</div>
+              <div id="rule-4" class="p-2 rounded-xl bg-slate-900 border border-slate-700 text-rose-400">❌ 4. Harus memuat angka 404</div>
+              <div id="rule-5" class="p-2 rounded-xl bg-slate-900 border border-slate-700 text-rose-400">❌ 5. Harus memuat huruf kapital "PRO"</div>
+            </div>
+
+            <div id="pass-status" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-center text-slate-300 font-bold">
+              Ketik password di atas untuk verifikasi!
+            </div>
+          </div>
+
+          <!-- GAME 6: STRESS RELEASE DEV CLICKER -->
+          <div id="game-container-6" class="space-y-4 hidden flex flex-col justify-between h-full relative">
+            <div class="border-b border-slate-700 pb-2 text-center">
+              <h4 class="font-black text-sm text-white font-mono">💥 Release Stress: Selesaikan Project Client!</h4>
+              <p class="text-xs text-slate-300 font-bold mt-0.5">Tekan <kbd id="k-clicker-space">SPACE</kbd> / <kbd id="k-clicker-enter">ENTER</kbd> atau Klik secepatnya!</p>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex justify-between text-xs font-mono font-bold">
+                <span class="text-slate-300">Progress Project:</span>
+                <span id="clicker-percent" class="text-cyan-400 font-black">0%</span>
+              </div>
+              <div class="w-full bg-slate-950 h-5 rounded-full overflow-hidden border border-slate-700 p-0.5 shadow-inner">
+                <div id="clicker-bar" class="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 h-full rounded-full w-0 transition-all duration-150"></div>
+              </div>
+              <p id="clicker-comment" class="text-center font-mono text-xs text-amber-400 font-bold min-h-[20px]">
+                "Client baru aja bayar DP, ayo koding secepatnya!"
+              </p>
+            </div>
+
+            <div class="flex justify-center my-2 relative">
+              <button id="clicker-big-btn" onclick="clickDevProject(event)" class="w-40 h-40 rounded-full bg-gradient-to-tr from-cyan-500 via-blue-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-slate-950 font-black text-lg shadow-2xl shadow-cyan-500/40 active:scale-90 transition-transform flex flex-col items-center justify-center gap-1 border-4 border-cyan-300">
+                <i class="fa-solid fa-keyboard text-3xl"></i>
+                <span>KLIK DISINI!</span>
+                <span class="text-xs font-mono text-slate-900 font-bold">+5% Progress</span>
+              </button>
+            </div>
+
+            <div class="text-center">
+              <button onclick="resetClickerGame()" class="text-xs text-slate-300 hover:text-white font-mono font-bold underline">Reset Progress</button>
+            </div>
+          </div>
+
+          <!-- GAME 7: TANGKAP KOPI PROGRAMMER -->
+          <div id="game-container-7" class="space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3 flex-wrap gap-2">
+              <span id="catch-score" class="text-xs font-mono bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-black">Kopi: 0 ☕</span>
+              
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-mono text-slate-300 font-bold">Kontrol:</span>
+                <kbd id="k-catch-left">← / A</kbd>
+                <kbd id="k-catch-right">D / →</kbd>
+              </div>
+
+              <span id="catch-timer" class="text-xs font-mono bg-amber-950 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full font-black">Waktu: 15s</span>
+              <button onclick="startCatchGame()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-lg">
+                ☕ MULAI GAME
+              </button>
+            </div>
+
+            <div id="catch-area" class="w-full h-48 bg-slate-950 rounded-2xl border border-slate-700 relative overflow-hidden flex flex-col justify-between p-2 shadow-inner">
+              <div id="catch-falling-item" class="absolute text-3xl transition-all duration-75" style="left: 50%; top: 0px;">☕</div>
+              <div class="mt-auto relative w-full h-10">
+                <div id="catch-basket" class="absolute bottom-0 text-4xl transition-all duration-100" style="left: 45%;">📥</div>
+              </div>
+            </div>
+
+            <div class="flex justify-center gap-4">
+              <button onclick="moveBasket('left')" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-xl text-xs font-black border border-slate-600 active:scale-95 flex items-center gap-2">
+                <kbd class="text-[10px]">A / ←</kbd> KIRI
+              </button>
+              <button onclick="moveBasket('right')" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-xl text-xs font-black border border-slate-600 active:scale-95 flex items-center gap-2">
+                KANAN <kbd class="text-[10px]">D / →</kbd>
+              </button>
+            </div>
+          </div>
+
+          <!-- GAME 8: COLOK KABEL SERVER LAN -->
+          <div id="game-container-8" class="space-y-4 hidden">
+            <div class="border-b border-slate-700 pb-2 text-center flex flex-wrap items-center justify-between gap-2">
+              <div class="text-left">
+                <h4 class="font-black text-sm text-white font-mono">🔌 Colok Kabel Server LAN</h4>
+                <p class="text-xs text-slate-300 font-bold">Gunakan Mouse atau Keyboard Hotkey <kbd>1,2,3</kbd> & <kbd>Q,W,E</kbd>!</p>
+              </div>
+              <div class="flex items-center gap-1 text-xs font-mono font-bold">
+                <span>Kabel: <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd></span>
+                <span class="ml-2">Port: <kbd>Q</kbd><kbd>W</kbd><kbd>E</kbd></span>
+              </div>
+            </div>
+
+            <div class="relative grid grid-cols-2 gap-6 p-4 bg-slate-950 rounded-2xl border border-slate-700 my-2">
+              <!-- SVG Connector Layer -->
+              <svg id="cable-svg-layer" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
+
+              <!-- Left Cables -->
+              <div class="space-y-3 z-20">
+                <p class="text-xs font-mono text-cyan-400 font-black border-b border-slate-800 pb-1">Kabel Server:</p>
+                <button id="cable-red" onclick="selectCable('red')" class="w-full p-3 rounded-xl bg-rose-950 border-2 border-rose-500 text-rose-300 font-mono text-xs font-bold flex items-center justify-between hover:scale-105 transition-transform">
+                  <span>🔴 Merah (LAN 1)</span> <kbd id="k-cable-1">1</kbd>
+                </button>
+                <button id="cable-green" onclick="selectCable('green')" class="w-full p-3 rounded-xl bg-emerald-950 border-2 border-emerald-500 text-emerald-300 font-mono text-xs font-bold flex items-center justify-between hover:scale-105 transition-transform">
+                  <span>🟢 Hijau (LAN 2)</span> <kbd id="k-cable-2">2</kbd>
+                </button>
+                <button id="cable-blue" onclick="selectCable('blue')" class="w-full p-3 rounded-xl bg-cyan-950 border-2 border-cyan-500 text-cyan-300 font-mono text-xs font-bold flex items-center justify-between hover:scale-105 transition-transform">
+                  <span>🔵 Biru (Fiber)</span> <kbd id="k-cable-3">3</kbd>
+                </button>
+              </div>
+
+              <!-- Right Sockets -->
+              <div class="space-y-3 z-20">
+                <p class="text-xs font-mono text-purple-400 font-black border-b border-slate-800 pb-1">Port Router:</p>
+                <button id="port-green" onclick="connectPort('green')" class="w-full p-3 rounded-xl bg-slate-900 border-2 border-emerald-500/50 text-emerald-300 font-mono text-xs font-bold flex items-center justify-between hover:border-emerald-400">
+                  <span id="port-green-text">🔌 Port Hijau</span> <kbd id="k-port-q">Q</kbd>
+                </button>
+                <button id="port-blue" onclick="connectPort('blue')" class="w-full p-3 rounded-xl bg-slate-900 border-2 border-cyan-500/50 text-cyan-300 font-mono text-xs font-bold flex items-center justify-between hover:border-cyan-400">
+                  <span id="port-blue-text">🔌 Port Biru</span> <kbd id="k-port-w">W</kbd>
+                </button>
+                <button id="port-red" onclick="connectPort('red')" class="w-full p-3 rounded-xl bg-slate-900 border-2 border-rose-500/50 text-rose-300 font-mono text-xs font-bold flex items-center justify-between hover:border-rose-400">
+                  <span id="port-red-text">🔌 Port Merah</span> <kbd id="k-port-e">E</kbd>
+                </button>
+              </div>
+            </div>
+
+            <div id="cable-status" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-center text-cyan-300 font-bold">
+              Pilih kabel di sebelah kiri dulu!
+            </div>
+          </div>
+
+          <!-- GAME 9: BUG RUNNER DINO JUMP -->
+          <div id="game-container-9" class="space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+              <span id="dino-score" class="text-xs font-mono bg-cyan-950 text-cyan-300 border border-cyan-500/40 px-3 py-1 rounded-full font-black">Skor: 0</span>
+              
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-mono text-slate-300 font-bold">Lompat:</span>
+                <kbd id="k-runner-space">SPACEBAR</kbd>
+                <kbd id="k-runner-up">↑ ARROW</kbd>
+              </div>
+
+              <button onclick="startDinoGameCanvas()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-xs rounded-xl shadow-lg">
+                ▶️ MULAI LOMPAT
+              </button>
+            </div>
+
+            <div class="flex justify-center">
+              <canvas id="dino-canvas" width="400" height="150" class="w-full h-36 bg-slate-950 rounded-2xl border-2 border-slate-700 shadow-inner"></canvas>
+            </div>
+
+            <div class="flex justify-center">
+              <button onclick="triggerDinoJumpCanvas()" class="px-10 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-slate-950 font-black text-xs rounded-xl shadow-xl active:scale-90 transition-all flex items-center gap-2">
+                🚀 LOMPAT <kbd class="text-[10px]">SPACEBAR</kbd>
+              </button>
+            </div>
+          </div>
+
+          <!-- GAME 10: RODA NASIB IT -->
+          <div id="game-container-10" class="space-y-4 hidden text-center">
+            <div class="border-b border-slate-700 pb-2">
+              <h4 class="font-black text-sm text-white font-mono">🎰 Roda Nasib Kodingan Hari Ini</h4>
+              <p class="text-xs text-slate-300 font-bold">Putar roda untuk melihat ramalan nasib kodinganmu hari ini!</p>
+            </div>
+
+            <div class="flex justify-center my-2 relative">
+              <div class="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[20px] border-t-rose-500 absolute -top-2 z-20 drop-shadow"></div>
+              <canvas id="wheel-canvas" width="220" height="220" class="rounded-full border-4 border-cyan-400 shadow-2xl"></canvas>
+            </div>
+
+            <button onclick="spinCanvasWheel()" class="px-8 py-3 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-slate-950 font-black text-xs md:text-sm rounded-xl shadow-xl hover:scale-105 active:scale-95 transition-all">
+              🎲 PUTAR RODA NASIB!
+            </button>
+
+            <div id="wheel-result" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-amber-300 font-bold min-h-[40px] flex items-center justify-center">
+              Tekan [PUTAR RODA NASIB!] di atas!
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Q&A Accordion Section -->
+        <div class="lg:col-span-5 glass-panel p-5 rounded-2xl border border-slate-700 flex flex-col justify-between">
+          <div>
+            <h3 class="font-black text-white text-base mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-comments text-cyan-400"></i>
+              Simulasi Tanya Jawab (Q&A Audiens)
+            </h3>
+
+            <div class="space-y-2 text-xs md:text-sm">
+              <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-900">
+                <button onclick="toggleFaq(this)" class="w-full p-3 text-left font-black text-slate-100 hover:text-cyan-400 flex justify-between items-center">
+                  <span>"Apakah anak Informatika harus jago Matematika?"</span>
+                  <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-3 pt-0 text-slate-300 border-t border-slate-800 leading-relaxed font-semibold">
+                  Tidak harus master kalkulus! Yang paling utama adalah <b>logika terstruktur</b> dan kesabaran saat memecahkan bug.
+                </div>
+              </div>
+
+              <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-900">
+                <button onclick="toggleFaq(this)" class="w-full p-3 text-left font-black text-slate-100 hover:text-cyan-400 flex justify-between items-center">
+                  <span>"Anak Informatika bisa benerin printer rusak?"</span>
+                  <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-3 pt-0 text-slate-300 border-t border-slate-800 leading-relaxed font-semibold">
+                  Mitos abad ini! Kami fokus di rekayasa perangkat lunak, tapi kalau printer macet biasanya ritualnya matikan terus colok lagi! 😅
+                </div>
+              </div>
+
+              <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-900">
+                <button onclick="toggleFaq(this)" class="w-full p-3 text-left font-black text-slate-100 hover:text-cyan-400 flex justify-between items-center">
+                  <span>"Berapa lama belajar koding sampai mahir?"</span>
+                  <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-3 pt-0 text-slate-300 border-t border-slate-800 leading-relaxed font-semibold">
+                  Dasarnya bisa dipahami dalam 1-2 bulan, tetapi belajar teknologi adalah perjalanan seumur hidup karena selalu berkembang pesat.
+                </div>
+              </div>
+
+              <div class="border border-slate-700 rounded-xl overflow-hidden bg-slate-900">
+                <button onclick="toggleFaq(this)" class="w-full p-3 text-left font-black text-slate-100 hover:text-cyan-400 flex justify-between items-center">
+                  <span>"Apa bahasa pemrograman terbaik untuk pemula?"</span>
+                  <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                </button>
+                <div class="faq-content hidden p-3 pt-0 text-slate-300 border-t border-slate-800 leading-relaxed font-semibold">
+                  <b>Python</b> dan <b>JavaScript</b>! Sintaksnya sangat mirip bahasa Inggris manusia sehingga sangat ramah untuk pemula.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-700 text-xs font-mono text-cyan-400 font-bold text-center">
+            💬 Klik pertanyaan di atas untuk membuka jawaban simulasi!
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SLIDE 11: DASHBOARD KESIMPULAN -->
+    <section id="slide-10" class="slide-content flex-col gap-6">
+      <div class="border-b border-slate-700 pb-4">
+        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+          <i class="fa-solid fa-list-check text-xs"></i> Modul 11 • Rangkuman Ringkas
+        </span>
+        <h2 class="text-2xl md:text-3xl font-black text-white glow-cyan">Dashboard Kesimpulan Informatika</h2>
+        <p class="text-slate-300 text-sm md:text-base mt-1 font-semibold">Rangkuman 4 poin esensial dari seluruh topik materi yang telah dibahas.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 hover:border-cyan-400 transition-all">
+          <div class="text-3xl font-black text-cyan-400 font-mono">01</div>
+          <h3 class="font-black text-white text-lg mt-2">Logika Adalah Kunci</h3>
+          <p class="text-slate-300 text-xs md:text-sm mt-2 leading-relaxed font-semibold">Informatika bukan sekadar mengetik kode, tapi cara berpikir kritis untuk memecahkan masalah.</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 hover:border-purple-400 transition-all">
+          <div class="text-3xl font-black text-purple-400 font-mono">02</div>
+          <h3 class="font-black text-white text-lg mt-2">Otomatisasi & Efisiensi</h3>
+          <p class="text-slate-300 text-xs md:text-sm mt-2 leading-relaxed font-semibold">Teknologi memotong tugas repetitif sehingga manusia bisa fokus pada inovasi kreatif.</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 hover:border-emerald-400 transition-all">
+          <div class="text-3xl font-black text-emerald-400 font-mono">03</div>
+          <h3 class="font-black text-white text-lg mt-2">Etika & Keamanan</h3>
+          <p class="text-slate-300 text-xs md:text-sm mt-2 leading-relaxed font-semibold">Keamanan data pribadi dan etika digital sangat krusial di tengah pesatnya konektivitas global.</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl border border-slate-700 hover:border-pink-400 transition-all">
+          <div class="text-3xl font-black text-pink-400 font-mono">04</div>
+          <h3 class="font-black text-white text-lg mt-2">Adaptasi Era AI</h3>
+          <p class="text-slate-300 text-xs md:text-sm mt-2 leading-relaxed font-semibold">AI adalah mitra kerja superpower. Menguasai Informatika memberi keunggulan di masa depan.</p>
+        </div>
+      </div>
+
+      <div class="glass-panel p-5 rounded-2xl border border-slate-700 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center md:text-left">
+          <h4 class="font-black text-base text-white">Status Pemahaman Materi</h4>
+          <p class="text-xs font-mono text-slate-300 font-bold">Seluruh modul presentasi telah sukses diselesaikan 100%.</p>
+        </div>
+        <div class="w-full md:w-1/2 bg-slate-900 h-4 rounded-full overflow-hidden border border-slate-700 p-0.5">
+          <div class="bg-gradient-to-r from-cyan-500 via-purple-500 to-emerald-400 h-full rounded-full w-full animate-pulse"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: PENUTUP, KONTAK WA, KOMUNITAS & GRUP KELAS 7 -->
+    <section id="slide-11" class="slide-content flex-col items-center justify-center text-center py-6 gap-8">
+      <div>
+        <span class="text-xs font-mono text-purple-400 uppercase tracking-widest font-black flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-flag-checkered text-xs"></i> Slide Akhir • Penutup & Akses Komunitas
+        </span>
+        <h2 class="text-3xl md:text-5xl font-black text-white glow-purple mt-2">SEKIAN & TERIMA KASIH!</h2>
+        <p class="text-slate-200 text-sm md:text-base mt-2 max-w-xl mx-auto leading-relaxed font-bold">
+          "Semoga kodinganmu tidak pernah error di line 1 dan titik koma-mu selalu aman!" ☕✨
+        </p>
+      </div>
+
+      <!-- Action & Celebration -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <button onclick="triggerFireworks()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-400 via-cyan-500 to-purple-600 text-slate-950 font-black text-sm rounded-2xl shadow-xl shadow-cyan-500/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-sparkles"></i> 🎉 RAYAKAN PRESENTASI SELESAI!
+        </button>
+      </div>
+
+      <!-- MAIN WA & COMMUNITY HIGHLIGHT SECTION (3D CARDS) -->
+      <div class="w-full max-w-6xl mx-auto space-y-6 text-left">
+        
+        <!-- TOP SECTION: DIRECT CONTACT & MANDATORY COMMUNITY -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Card 3D Contact Admin -->
+          <div class="card-3d glass-panel p-6 rounded-3xl border-2 border-emerald-500/60 bg-gradient-to-br from-emerald-950/50 via-slate-900 to-slate-950 flex flex-col sm:flex-row items-center gap-5 shadow-2xl relative overflow-hidden group">
+            <div class="p-3 bg-slate-950 rounded-2xl border border-emerald-500/50 shrink-0 text-center shadow-lg">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fwa.me%2F6281807092783" alt="QR Kontak WA" class="w-28 h-28 rounded-lg">
+              <span class="text-xs font-mono text-emerald-400 block mt-1.5 font-bold">Scan Barcode Kontak</span>
+            </div>
+
+            <div class="space-y-2 flex-1 text-center sm:text-left">
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/50 text-xs font-mono font-bold">
+                <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Teacher / Admin
+              </div>
+              <h3 class="text-2xl font-black text-white font-mono tracking-tight">081807092783</h3>
+              <p class="text-xs md:text-sm text-slate-200 leading-relaxed font-semibold">Punya pertanyaan seputar materi Informatika atau konsultasi tugas? Hubungi kami langsung via WhatsApp!</p>
+              
+              <a href="https://wa.me/6281807092783" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all active:scale-95 mt-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Chat WhatsApp (081807092783)
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 3D Mandatory Community -->
+          <div class="card-3d glass-panel p-6 rounded-3xl border-2 border-cyan-500/70 bg-gradient-to-br from-cyan-950/50 via-slate-900 to-slate-950 flex flex-col sm:flex-row items-center gap-5 shadow-2xl relative overflow-hidden group">
+            <div class="p-3 bg-slate-950 rounded-2xl border border-cyan-500/50 shrink-0 text-center shadow-lg">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Fchat.whatsapp.com%2FKuI8WsQX4136T4966eLlLu" alt="QR Komunitas Wajib" class="w-28 h-28 rounded-lg">
+              <span class="text-xs font-mono text-cyan-400 block mt-1.5 font-bold">Scan Barcode Komunitas</span>
+            </div>
+
+            <div class="space-y-2 flex-1 text-center sm:text-left">
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-500/50 text-xs font-mono font-bold animate-pulse">
+                <i class="fa-solid fa-triangle-exclamation"></i> WAJIB MASUK KOMUNITAS
+              </div>
+              <h3 class="text-xl font-black text-white">Komunitas Utama Informatika</h3>
+              <p class="text-xs md:text-sm text-slate-200 leading-relaxed font-semibold">Seluruh siswa wajib bergabung ke Komunitas WhatsApp untuk pengumuman, modul, dan grup kelas!</p>
+              
+              <a href="https://chat.whatsapp.com/KuI8WsQX4136T4966eLlLu" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs rounded-xl shadow-lg transition-all active:scale-95 mt-2">
+                <i class="fa-solid fa-users text-sm"></i> Gabung Komunitas Utama <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GRUP KELAS 7A - 7G 3D CARDS GRID -->
+        <div class="pt-4">
+          <div class="border-b border-slate-700 pb-3 mb-4 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="font-black text-xl text-white flex items-center gap-2">
+                <i class="fa-solid fa-people-group text-cyan-400"></i>
+                Grup WhatsApp Kelas 7 (7A - 7G)
+              </h3>
+              <p class="text-xs md:text-sm text-slate-300 font-bold">Pilih grup kelasmu di bawah ini atau gabung melalui Komunitas Utama!</p>
+            </div>
+            <span class="text-xs font-mono bg-slate-900 border border-slate-700 text-cyan-400 px-3 py-1.5 rounded-full font-bold">
+              7 Kelas Tersedia
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <!-- Kelas 7A -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-cyan-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-cyan-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FLZXHoNrs6qFKXb2fDx4jDq" alt="QR 7A" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7A</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7A" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/LZXHoNrs6qFKXb2fDx4jDq" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 font-black text-xs rounded-xl border border-cyan-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7A
+              </a>
+            </div>
+
+            <!-- Kelas 7B -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-purple-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-purple-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FH22kTawIuWg6bZ6StR4orL" alt="QR 7B" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7B</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7B" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/H22kTawIuWg6bZ6StR4orL" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-purple-500 hover:text-slate-950 text-purple-300 font-black text-xs rounded-xl border border-purple-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7B
+              </a>
+            </div>
+
+            <!-- Kelas 7C -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-emerald-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-emerald-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FDRimos5EZbm9KxGESEz5oC" alt="QR 7C" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7C</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7C" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/DRimos5EZbm9KxGESEz5oC" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 font-black text-xs rounded-xl border border-emerald-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7C
+              </a>
+            </div>
+
+            <!-- Kelas 7D -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-pink-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-pink-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FD9FR4SzcQQOLWgMgt7yB3x" alt="QR 7D" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7D</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7D" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/D9FR4SzcQQOLWgMgt7yB3x" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-pink-500 hover:text-slate-950 text-pink-300 font-black text-xs rounded-xl border border-pink-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7D
+              </a>
+            </div>
+
+            <!-- Kelas 7E -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-amber-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-amber-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FLxIU73WmB7LHGeTHNDQ4s9" alt="QR 7E" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7E</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7E" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/LxIU73WmB7LHGeTHNDQ4s9" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-amber-300 font-black text-xs rounded-xl border border-amber-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7E
+              </a>
+            </div>
+
+            <!-- Kelas 7F -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-cyan-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-cyan-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FJtN40AfxfCqHgWM3zYkn4b" alt="QR 7F" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7F</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7F" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/JtN40AfxfCqHgWM3zYkn4b" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 font-black text-xs rounded-xl border border-cyan-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7F
+              </a>
+            </div>
+
+            <!-- Kelas 7G -->
+            <div class="card-3d glass-panel p-4 rounded-2xl border border-slate-700 hover:border-purple-400 bg-slate-900 flex flex-col items-center text-center space-y-3 group">
+              <div class="p-2 bg-slate-950 rounded-xl border border-slate-700 group-hover:border-purple-400 transition-colors">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https%3A%2F%2Fchat.whatsapp.com%2FDsD4C3RnDiy2BtHyBd7A22" alt="QR 7G" class="w-24 h-24 rounded-md">
+              </div>
+              <div>
+                <h4 class="font-black text-base text-white">Grup Kelas 7G</h4>
+                <p class="text-xs text-slate-400 mt-0.5 leading-tight font-bold">(atau pilih grup "Kelas 7G" di dalam komunitas)</p>
+              </div>
+              <a href="https://chat.whatsapp.com/DsD4C3RnDiy2BtHyBd7A22" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 bg-slate-800 hover:bg-purple-500 hover:text-slate-950 text-purple-300 font-black text-xs rounded-xl border border-purple-500/40 transition-all flex items-center justify-center gap-1.5">
+                <i class="fa-brands fa-whatsapp text-sm"></i> Gabung 7G
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Rating Box -->
+      <div class="glass-panel p-5 rounded-2xl border border-slate-700 max-w-md w-full flex flex-col items-center gap-3">
+        <h4 class="font-black text-base text-slate-100">Beri Rating Untuk Presentasi Ini:</h4>
+        <div class="flex gap-2 text-3xl" id="star-rating">
+          <button onclick="ratePresentation(1)" class="star-btn hover:scale-125 transition-transform text-slate-600">★</button>
+          <button onclick="ratePresentation(2)" class="star-btn hover:scale-125 transition-transform text-slate-600">★</button>
+          <button onclick="ratePresentation(3)" class="star-btn hover:scale-125 transition-transform text-slate-600">★</button>
+          <button onclick="ratePresentation(4)" class="star-btn hover:scale-125 transition-transform text-slate-600">★</button>
+          <button onclick="ratePresentation(5)" class="star-btn hover:scale-125 transition-transform text-slate-600">★</button>
+        </div>
+        <p id="rating-feedback" class="text-xs font-mono text-cyan-400 font-bold min-h-[20px]">Klik bintang untuk memberikan ulasan!</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAVIGATION CONTROL BAR -->
+  <footer class="sticky bottom-0 z-40 glass-panel border-t border-slate-700 px-4 py-3 shadow-2xl">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+      
+      <button onclick="prevSlide()" class="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-100 border border-slate-600 rounded-xl text-xs md:text-sm font-black transition-all flex items-center gap-1.5 active:scale-95">
+        <i class="fa-solid fa-chevron-left text-xs"></i> Prev
+      </button>
+
+      <div id="dots-container" class="hidden sm:flex items-center gap-1.5 overflow-x-auto max-w-md py-1">
+        <!-- Dots rendered by JS -->
+      </div>
+
+      <button onclick="nextSlide()" class="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-slate-950 rounded-xl text-xs md:text-sm font-black transition-all flex items-center gap-1.5 active:scale-95 shadow-lg shadow-cyan-500/30">
+        Next <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+
+    </div>
+  </footer>
+
+  <!-- MEMBER MODAL POPUP -->
+  <div id="member-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-3xl border border-slate-600 max-w-sm w-full relative shadow-2xl text-center flex flex-col items-center">
+      <button onclick="closeMemberModal()" class="absolute top-4 right-4 p-1.5 text-slate-300 hover:text-white bg-slate-800 rounded-full">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="modal-icon-bg" class="w-20 h-20 rounded-2xl bg-cyan-950 border-2 border-cyan-500 flex items-center justify-center mb-3">
+        <i id="modal-icon" class="fa-solid fa-user text-2xl text-cyan-400"></i>
+      </div>
+
+      <h3 id="modal-name" class="font-black text-white text-xl">Nama Anggota</h3>
+      <span id="modal-role" class="text-xs font-mono text-cyan-300 bg-cyan-950 px-3 py-1 rounded-full border border-cyan-500/40 font-bold mt-1">Role Spesifik</span>
+
+      <div class="w-full text-left mt-4 space-y-2 text-xs">
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-700">
+          <span class="text-slate-300 font-mono font-bold">Level Asupan Kopi:</span>
+          <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden mt-1">
+            <div id="modal-coffee-bar" class="bg-cyan-400 h-full w-[85%]"></div>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-700">
+          <span class="text-slate-300 font-mono font-bold">Bug Solved / Debug Level:</span>
+          <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden mt-1">
+            <div id="modal-bug-bar" class="bg-purple-400 h-full w-[92%]"></div>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-200">
+          <span class="text-slate-300 font-mono font-bold block mb-1">Quote Favorit:</span>
+          <i id="modal-quote" class="text-cyan-300 font-serif font-bold">"Quote anggota disini"</i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div id="help-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-3xl border border-slate-600 max-w-md w-full relative shadow-2xl">
+      <button onclick="toggleHelpModal()" class="absolute top-4 right-4 p-1.5 text-slate-300 hover:text-white bg-slate-800 rounded-full">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <h3 class="font-black text-white text-base flex items-center gap-2 mb-4">
+        <i class="fa-solid fa-keyboard text-cyan-400"></i>
+        Panduan Navigasi Keyboard & Shortcut
+      </h3>
+
+      <div class="space-y-3 text-xs md:text-sm text-slate-200 font-mono font-bold">
+        <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900 border border-slate-700">
+          <span>Mode Proyektor (Papan Tulis)</span>
+          <span class="text-amber-400 font-black">Tekan [ P ]</span>
+        </div>
+        <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900 border border-slate-700">
+          <span>Panah Kanan [ → ] / Space</span>
+          <span class="text-cyan-400 font-black">Slide Selanjutnya</span>
+        </div>
+        <div class="flex justify-between items-center p-2.5 rounded-xl bg-slate-900 border border-slate-700">
+          <span>Panah Kiri [ ← ]</span>
+          <span class="text-purple-400 font-black">Slide Sebelumnya</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INCOGNITO TEST SIMULATOR MODAL -->
+  <div id="incognito-test-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass-panel p-6 rounded-3xl border border-slate-600 max-w-md w-full relative shadow-2xl space-y-4">
+      <button onclick="closeIncognitoModal()" class="absolute top-4 right-4 p-1.5 text-slate-300 hover:text-white bg-slate-800 rounded-full">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3 border-b border-slate-700 pb-3">
+        <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-amber-400 text-xl font-bold">
+          <i class="fa-solid fa-user-ninja"></i>
+        </div>
+        <div>
+          <h4 class="font-black text-white text-base">Simulasi Incognito Browser</h4>
+          <p class="text-xs text-slate-300 font-bold">Tampilan saat teman/guru membuka linkmu tanpa login!</p>
+        </div>
+      </div>
+
+      <div id="incognito-preview-box" class="p-4 rounded-2xl bg-slate-950 border border-slate-700 text-center space-y-3">
+        <!-- Rendered by JS -->
+      </div>
+
+      <button onclick="closeIncognitoModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-100 font-black text-xs rounded-xl border border-slate-600">
+        Tutup Simulasi
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // GLOBAL STATE
+    let currentSlide = 0;
+    const totalSlides = 12;
+    let isProjectorMode = false;
+
+    // DEFAULT DATA FOR 2 RANDOMIZER BOXES
+    const defaultGroupsInput = "Kelompok 1\nKelompok 2\nKelompok 3\nKelompok 4\nKelompok 5\nKelompok 6\nKelompok 7\nKelompok 8\n";
+    const defaultDateTimeInput = "Senin, 02 Nov 2026 - 08:00 - 08:30 WIB\nSenin, 02 Nov 2026 - 08:30 - 09:00 WIB\nSelasa, 03 Nov 2026 - 09:00 - 09:30 WIB\nSelasa, 03 Nov 2026 - 09:30 - 10:00 WIB\nRabu, 04 Nov 2026 - 10:00 - 10:30 WIB";
+
+    // TEAM MEMBERS DATA
+    const membersData = [
+      { name: "Budi Santoso", role: "Penanggung Jawab", icon: "fa-crown", color: "cyan", coffee: "95%", bug: "90%", quote: "Gak ada bug yang gak bisa di-Google!" },
+      { name: "Siti Rahma", role: "Animasi Slide", icon: "fa-wand-magic-sparkles", color: "purple", coffee: "80%", bug: "98%", quote: "CSS transitions make the world go round." },
+      { name: "Andi Wijaya", role: "Pembuat Elemen & Visual", icon: "fa-palette", color: "emerald", coffee: "88%", bug: "85%", quote: "Neon gradients adalah ketenangan jiwaku." },
+      { name: "Maya Putri", role: "Mencari Materi", icon: "fa-magnifying-glass-chart", color: "pink", coffee: "70%", bug: "92%", quote: "Fakta valid adalah kunci presentasi berkualitas." },
+      { name: "Rian Kurnia", role: "Merangkum Materi", icon: "fa-file-contract", color: "amber", coffee: "99%", bug: "89%", quote: "Materi 100 lembar disederhanakan jadi 3 poin." }
+    ];
+
+    const puzzleSvgGraphic = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300"><rect width="300" height="300" fill="%230f172a"/><circle cx="150" cy="150" r="130" fill="%2306b6d4" opacity="0.15"/><rect x="20" y="20" width="260" height="260" rx="20" fill="%231e293b" stroke="%2306b6d4" stroke-width="4"/><text x="150" y="70" fill="%2338bdf8" font-family="sans-serif" font-weight="900" font-size="20" text-anchor="middle">DUNIA INFORMATIKA</text><text x="150" y="125" font-size="45" text-anchor="middle">💻☕🚀</text><rect x="35" y="150" width="230" height="70" rx="14" fill="%230284c7" opacity="0.3" stroke="%2338bdf8" stroke-width="1.5"/><text x="150" y="180" fill="%23f43f5e" font-family="monospace" font-weight="bold" font-size="15" text-anchor="middle">"WORKS ON MY MACHINE"</text><text x="150" y="205" fill="%2310b981" font-family="monospace" font-weight="bold" font-size="12" text-anchor="middle">✓ Status: 0 Bug • Clean Code</text><circle cx="240" cy="60" r="14" fill="%23ec4899"/><text x="240" y="65" fill="%23ffffff" font-weight="bold" font-size="12" text-anchor="middle">PRO</text></svg>`;
+
+    let puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    let selectedTileIndex = null;
+    let puzzleMoves = 0;
+    let puzzleTimerSeconds = 0;
+    let puzzleTimerInterval = null;
+    let puzzleSolved = false;
+
+    // INIT ON LOAD
+    window.onload = function() {
+      resetRandomizer3Box();
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+      renderDots();
+      
+      // Init All Games & Simulators
+      initPuzzleGame();
+      initMemoryGame();
+      initQuizGame();
+      initWheelCanvas();
+
+      // GLOBAL KEYBOARD EVENT LISTENERS FOR SLIDES & GAMES CONTROLS
+      document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+
+        const key = e.key.toLowerCase();
+
+        // Projector Mode Toggle Shortcut: "P"
+        if (key === 'p') {
+          toggleProjectorMode();
+          return;
+        }
+
+        // Slide Navigation
+        if (e.key === 'ArrowRight') {
+          nextSlide();
+        } else if (e.key === 'ArrowLeft') {
+          prevSlide();
+        }
+
+        // Active Game Keyboard Controllers
+        handleGlobalGameKeyboard(e);
+      });
+
+      document.addEventListener('keyup', function(e) {
+        handleKeyboardHUDRelease(e);
+      });
+    };
+
+    // TOGGLE MODE PROYEKTOR / PAPAN TULIS
+    function toggleProjectorMode() {
+      isProjectorMode = !isProjectorMode;
+      const body = document.body;
+      const label = document.getElementById('projector-mode-label');
+      const btn = document.getElementById('btn-projector-mode');
+
+      if (isProjectorMode) {
+        body.classList.add('projector-mode');
+        if (label) label.innerText = "Mode Proyektor: ON (Papan Tulis)";
+        if (btn) btn.className = "px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 active:scale-95";
+        showToast("📺 MODE PROYEKTOR DIAKTIFKAN: Kontras tinggi terang khusus Papan Tulis!");
+      } else {
+        body.classList.remove('projector-mode');
+        if (label) label.innerText = "Mode Proyektor: OFF";
+        if (btn) btn.className = "px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5 active:scale-95";
+        showToast("🌙 KEMBALI KE MODE CYBER DARK");
+      }
+    }
+
+    // SLIDE 2: REAL SIMULATION EDITOR LOGIC (CANVA & GOOGLE SLIDES)
+    let currentGuidePlatform = 'canva';
+    let simulationStep = 1;
+
+    function switchGuidePlatform(platform) {
+      currentGuidePlatform = platform;
+      const canvaBtn = document.getElementById('btn-guide-canva');
+      const slidesBtn = document.getElementById('btn-guide-slides');
+      const canvaWrapper = document.getElementById('canva-mock-wrapper');
+      const slidesWrapper = document.getElementById('slides-mock-wrapper');
+
+      if (platform === 'canva') {
+        canvaBtn.className = "px-5 py-2.5 rounded-xl text-xs font-black border transition-all flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-purple-400 shadow-lg shadow-purple-500/20";
+        slidesBtn.className = "px-5 py-2.5 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all flex items-center gap-2";
+        canvaWrapper.classList.remove('hidden');
+        slidesWrapper.classList.add('hidden');
+      } else {
+        slidesBtn.className = "px-5 py-2.5 rounded-xl text-xs font-black border transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-blue-400 shadow-lg shadow-blue-500/20";
+        canvaBtn.className = "px-5 py-2.5 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all flex items-center gap-2";
+        slidesWrapper.classList.remove('hidden');
+        canvaWrapper.classList.add('hidden');
+      }
+
+      resetMockSimulation();
+    }
+
+    function resetMockSimulation() {
+      simulationStep = 1;
+      updateGuideStepIndicator("Langkah 1/4: Klik Tombol \"Bagikan\" (Share) ↗️");
+
+      // Reset Canva Controls
+      const cModal = document.getElementById('canva-share-modal');
+      const cAccess = document.getElementById('canva-access-select');
+      const cRoleWrap = document.getElementById('canva-role-wrapper');
+      if (cModal) cModal.style.transform = 'translateY(-10px) scale(0.95)';
+      if (cAccess) cAccess.value = 'locked';
+      if (cRoleWrap) cRoleWrap.classList.add('hidden');
+
+      // Reset Google Controls
+      const gModal = document.getElementById('google-share-modal');
+      const gAccess = document.getElementById('google-access-select');
+      const gRoleWrap = document.getElementById('google-role-wrapper');
+      if (gModal) gModal.classList.add('hidden');
+      if (gAccess) gAccess.value = 'locked';
+      if (gRoleWrap) gRoleWrap.classList.add('hidden');
+    }
+
+    function updateGuideStepIndicator(text) {
+      const el = document.getElementById('guide-step-indicator');
+      if (el) el.innerText = text;
+    }
+
+    // Canva Popover Actions
+    function openCanvaShareModal() {
+      const modal = document.getElementById('canva-share-modal');
+      if (modal) modal.style.transform = 'translateY(0) scale(1)';
+      simulationStep = 2;
+      updateGuideStepIndicator("Langkah 2/4: Ubah Akses dari 'Only you can access' ke 'Anyone with the link' 🌐");
+      showToast("💡 Buka dialog Canva Share!");
+    }
+
+    function closeCanvaShareModal() {
+      const modal = document.getElementById('canva-share-modal');
+      if (modal) modal.style.transform = 'translateY(-10px) scale(0.95)';
+    }
+
+    function onCanvaAccessChange() {
+      const val = document.getElementById('canva-access-select').value;
+      const roleWrap = document.getElementById('canva-role-wrapper');
+      if (val === 'public') {
+        if (roleWrap) roleWrap.classList.remove('hidden');
+        simulationStep = 3;
+        updateGuideStepIndicator("Langkah 3/4: Pilih Peran Pengunjung ('Can view' agar slide aman) 👁️");
+        showToast("🌐 Akses Canva terbuka untuk publik!");
+      } else {
+        if (roleWrap) roleWrap.classList.add('hidden');
+      }
+    }
+
+    function onCanvaRoleChange() {
+      simulationStep = 4;
+      updateGuideStepIndicator("Langkah 4/4: Klik tombol 'Copy link' untuk membagikan 📋");
+    }
+
+    function executeCanvaCopyLink() {
+      copyToClipboard("https://www.canva.com/design/DAGX998822/view?utm_content=public");
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 80, spread: 70 });
+      }
+      updateGuideStepIndicator("🎉 TAUTAN CANVA SUKSES DIBAGIKAN TANPA TERKUNCI!");
+      showToast("📋 Link Canva berhasil disalin ke clipboard!");
+    }
+
+    // Google Slides Modal Actions
+    function openGoogleShareModal() {
+      const modal = document.getElementById('google-share-modal');
+      if (modal) modal.classList.remove('hidden');
+      simulationStep = 2;
+      updateGuideStepIndicator("Langkah 2/4: Ubah Akses dari 'Restricted' ke 'Anyone with the link' 🌐");
+      showToast("💡 Buka dialog Google Slides Share!");
+    }
+
+    function closeGoogleShareModal() {
+      const modal = document.getElementById('google-share-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function onGoogleAccessChange() {
+      const val = document.getElementById('google-access-select').value;
+      const roleWrap = document.getElementById('google-role-wrapper');
+      if (val === 'public') {
+        if (roleWrap) roleWrap.classList.remove('hidden');
+        simulationStep = 3;
+        updateGuideStepIndicator("Langkah 3/4: Atur Peran ke 'Viewer' (Pengakses Lihat) 👁️");
+        showToast("🌐 Akses Google Slides terbuka!");
+      } else {
+        if (roleWrap) roleWrap.classList.add('hidden');
+      }
+    }
+
+    function onGoogleRoleChange() {
+      simulationStep = 4;
+      updateGuideStepIndicator("Langkah 4/4: Tekan 'Copy link' lalu klik 'Done' 📋");
+    }
+
+    function executeGoogleCopyLink() {
+      copyToClipboard("https://docs.google.com/presentation/d/1a2b3c4d5e/edit?usp=sharing");
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 80, spread: 70 });
+      }
+      updateGuideStepIndicator("🎉 TAUTAN GOOGLE SLIDES SUKSES DIBAGIKAN!");
+      showToast("📋 Link Google Slides berhasil disalin ke clipboard!");
+    }
+
+    function testIncognitoModal() {
+      const modal = document.getElementById('incognito-test-modal');
+      const box = document.getElementById('incognito-preview-box');
+      if (!modal || !box) return;
+
+      let isPublic = false;
+      if (currentGuidePlatform === 'canva') {
+        const cVal = document.getElementById('canva-access-select').value;
+        isPublic = (cVal === 'public');
+      } else {
+        const gVal = document.getElementById('google-access-select').value;
+        isPublic = (gVal === 'public');
+      }
+
+      if (!isPublic) {
+        box.innerHTML = `
+          <div class="w-16 h-16 rounded-full bg-rose-950 border-2 border-rose-500 text-rose-300 flex items-center justify-center mx-auto text-2xl font-bold">
+            <i class="fa-solid fa-user-lock"></i>
+          </div>
+          <h4 class="font-black text-rose-400 text-base">Akses Ditolak! (Minta Login)</h4>
+          <p class="text-xs text-slate-200 font-bold">
+            "Anda memerlukan izin. Minta akses atau login dengan akun yang memiliki hak akses."
+          </p>
+          <span class="inline-block px-3 py-1 bg-rose-950 text-rose-300 text-xs font-mono rounded-full border border-rose-500/50 font-bold">Gagal Presentasi ❌</span>
+        `;
+      } else {
+        box.innerHTML = `
+          <div class="w-16 h-16 rounded-full bg-emerald-950 border-2 border-emerald-500 text-emerald-300 flex items-center justify-center mx-auto text-2xl font-bold">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <h4 class="font-black text-emerald-400 text-base">Slide Berhasil Terbuka Sempurna!</h4>
+          <p class="text-xs text-slate-200 font-bold">
+            "Selamat! Slide presentasi tampil jernih tanpa meminta login atau password."
+          </p>
+          <span class="inline-block px-3 py-1 bg-emerald-950 text-emerald-300 text-xs font-mono rounded-full border border-emerald-500/50 font-bold">Siap Presentasi 🎉</span>
+        `;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeIncognitoModal() {
+      const modal = document.getElementById('incognito-test-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // SLIDE 10: KEYBOARD GAME CONTROLLERS & HUD LISTENERS
+    function handleGlobalGameKeyboard(e) {
+      if (currentSlide !== 9) return; // Only active on Slide 10
+
+      const key = e.key.toLowerCase();
+      const statusHUD = document.getElementById('keyboard-hud-status');
+
+      if (statusHUD) {
+        statusHUD.innerText = `KEY PRESSED: [${e.key.toUpperCase()}]`;
+        statusHUD.className = "text-cyan-400 font-black animate-pulse";
+      }
+
+      // Game 7: Tangkap Kopi (A / D or Left / Right)
+      if (key === 'a' || e.key === 'ArrowLeft') {
+        highlightKbdBadge('k-catch-left');
+        moveBasket('left');
+      }
+      if (key === 'd' || e.key === 'ArrowRight') {
+        highlightKbdBadge('k-catch-right');
+        moveBasket('right');
+      }
+
+      // Game 9: Bug Runner Dino (Spacebar or ArrowUp)
+      if (e.key === ' ' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        highlightKbdBadge('k-runner-space');
+        highlightKbdBadge('k-runner-up');
+        triggerDinoJumpCanvas();
+      }
+
+      // Game 6: Dev Clicker (Space / Enter)
+      if (e.key === ' ' || e.key === 'Enter') {
+        if (!document.getElementById('game-container-6').classList.contains('hidden')) {
+          highlightKbdBadge('k-clicker-space');
+          highlightKbdBadge('k-clicker-enter');
+          clickDevProject(e);
+        }
+      }
+
+      // Game 4: Kuis Error (Keys 1-4 or A-D)
+      if (!document.getElementById('game-container-4').classList.contains('hidden')) {
+        if (key === '1' || key === 'a') { highlightKbdBadge('k-a'); answerQuiz(0); }
+        if (key === '2' || key === 'b') { highlightKbdBadge('k-b'); answerQuiz(1); }
+        if (key === '3' || key === 'c') { highlightKbdBadge('k-c'); answerQuiz(2); }
+        if (key === '4' || key === 'd') { highlightKbdBadge('k-d'); answerQuiz(3); }
+      }
+
+      // Game 8: Colok Kabel LAN (1-3 for Cables, Q-E for Ports)
+      if (!document.getElementById('game-container-8').classList.contains('hidden')) {
+        if (key === '1') { highlightKbdBadge('k-cable-1'); selectCable('red'); }
+        if (key === '2') { highlightKbdBadge('k-cable-2'); selectCable('green'); }
+        if (key === '3') { highlightKbdBadge('k-cable-3'); selectCable('blue'); }
+
+        if (key === 'q') { highlightKbdBadge('k-port-q'); connectPort('green'); }
+        if (key === 'w') { highlightKbdBadge('k-port-w'); connectPort('blue'); }
+        if (key === 'e') { highlightKbdBadge('k-port-e'); connectPort('red'); }
+      }
+    }
+
+    function handleKeyboardHUDRelease(e) {
+      const statusHUD = document.getElementById('keyboard-hud-status');
+      if (statusHUD) {
+        statusHUD.innerText = "READY (Press Keys!)";
+        statusHUD.className = "text-emerald-400 font-bold";
+      }
+
+      document.querySelectorAll('kbd').forEach(k => k.classList.remove('active-key'));
+    }
+
+    function highlightKbdBadge(elemId) {
+      const elem = document.getElementById(elemId);
+      if (elem) {
+        elem.classList.add('active-key');
+        setTimeout(() => elem.classList.remove('active-key'), 200);
+      }
+    }
+
+    // NAVIGATION LOGIC
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      
+      const currentElement = document.getElementById(`slide-${currentSlide}`);
+      if (currentElement) currentElement.classList.remove('active');
+
+      currentSlide = index;
+
+      const nextElement = document.getElementById(`slide-${currentSlide}`);
+      if (nextElement) nextElement.classList.add('active');
+
+      const dropdown = document.getElementById('slide-dropdown');
+      if (dropdown) dropdown.value = currentSlide;
+
+      const numStr = String(currentSlide + 1).padStart(2, '0');
+      const indicator = document.getElementById('slide-indicator');
+      if (indicator) indicator.innerText = `${numStr} / ${totalSlides}`;
+      
+      const progressPct = ((currentSlide + 1) / totalSlides) * 100;
+      const topBar = document.getElementById('top-progress-bar');
+      if (topBar) topBar.style.width = `${progressPct}%`;
+
+      updateDots();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        goToSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        goToSlide(currentSlide - 1);
+      }
+    }
+
+    function renderDots() {
+      const container = document.getElementById('dots-container');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.onclick = () => goToSlide(i);
+        container.appendChild(dot);
+      }
+      updateDots();
+    }
+
+    function updateDots() {
+      const container = document.getElementById('dots-container');
+      if (!container) return;
+      const dots = container.children;
+      for (let i = 0; i < dots.length; i++) {
+        if (i === currentSlide) {
+          dots[i].className = 'w-6 h-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 transition-all cursor-pointer';
+        } else {
+          dots[i].className = 'w-3 h-3 rounded-full bg-slate-700 hover:bg-slate-500 transition-all cursor-pointer';
+        }
+      }
+    }
+
+    // SLIDE 1: 2-BOX RANDOMIZER TOOL LOGIC
+    let lastRandomized3BoxData = [];
+
+    function resetRandomizer3Box() {
+      const gInput = document.getElementById('randomizer-input-groups');
+      const dtInput = document.getElementById('randomizer-input-datetime');
+      if (gInput) gInput.value = defaultGroupsInput;
+      if (dtInput) dtInput.value = defaultDateTimeInput;
+      showToast("Input di-reset ke data default!");
+    }
+
+    function runRandomizer3Box() {
+      const groupsElem = document.getElementById('randomizer-input-groups');
+      const datetimeElem = document.getElementById('randomizer-input-datetime');
+      if (!groupsElem || !datetimeElem) return;
+
+      const groupsVal = groupsElem.value.trim();
+      const datetimeVal = datetimeElem.value.trim();
+
+      if (!groupsVal) {
+        showToast("⚠️ Masukkan daftar kelompok!");
+        return;
+      }
+
+      let groupList = groupsVal.split('\n').map(x => x.trim()).filter(x => x.length > 0);
+      let datetimeList = datetimeVal.split('\n').map(x => x.trim()).filter(x => x.length > 0);
+
+      if (datetimeList.length === 0) datetimeList = ["Senin, 02 Nov 2026 - 08:00 WIB"];
+
+      const container = document.getElementById('randomizer-results');
+      if (container) {
+        container.innerHTML = `<div class="py-20 text-center text-cyan-400 font-mono text-base font-black animate-pulse">🎲 Mengocok ${groupList.length} kelompok & memasangkan jadwal...</div>`;
+      }
+
+      let count = 0;
+      const interval = setInterval(() => {
+        let tempShuffled = [...groupList].sort(() => Math.random() - 0.5);
+        if (container) {
+          container.innerHTML = tempShuffled.map((item, idx) => `
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs md:text-sm font-mono text-slate-200 font-bold flex items-center justify-between">
+              <span><b class="text-cyan-400">#${idx + 1}</b> ${item}</span>
+              <span class="text-slate-400">Mengacak...</span>
+            </div>
+          `).join('');
+        }
+        count++;
+
+        if (count > 12) {
+          clearInterval(interval);
+          let finalShuffledGroups = [...groupList].sort(() => Math.random() - 0.5);
+
+          lastRandomized3BoxData = finalShuffledGroups.map((group, idx) => {
+            const assignedDateTime = datetimeList[idx % datetimeList.length];
+
+            return {
+              rank: idx + 1,
+              name: group,
+              datetime: assignedDateTime
+            };
+          });
+
+          displayFinal3BoxResults(lastRandomized3BoxData);
+        }
+      }, 70);
+    }
+
+    function displayFinal3BoxResults(dataList) {
+      const container = document.getElementById('randomizer-results');
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) + " " + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      
+      const tsElem = document.getElementById('randomizer-timestamp');
+      if (tsElem) tsElem.innerText = `Waktu Acak: ${dateStr}`;
+
+      const infoElem = document.getElementById('presentation-target-info');
+      if (infoElem) {
+        infoElem.innerHTML = `
+          <i class="fa-solid fa-circle-check text-emerald-400"></i> ${dataList.length} Kelompok Sukses Diacak dan Dijadwalkan!
+        `;
+      }
+
+      if (container) {
+        container.innerHTML = dataList.map((item) => `
+          <div class="p-4.5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 border-2 border-cyan-500/50 text-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xl hover:border-cyan-400 transition-all">
+            <div class="flex items-center gap-3.5">
+              <span class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-purple-600 text-slate-950 font-black text-xl flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/30">
+                #${item.rank}
+              </span>
+              <div>
+                <h4 class="font-black text-lg md:text-xl text-white leading-tight">${item.name}</h4>
+                <p class="text-xs md:text-sm text-cyan-300 font-mono mt-0.5 font-bold">Urutan Tampil Ke-${item.rank}</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-2 text-xs md:text-sm font-mono bg-slate-950 p-3 rounded-xl border border-purple-500/50 text-purple-300 font-black shrink-0 shadow-inner">
+              <i class="fa-solid fa-calendar-check text-purple-400"></i>
+              <span>${item.datetime}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      showToast("🎉 Pengacakan kelompok, tanggal & waktu selesai!");
+    }
+
+    function copyResultsWA() {
+      if (lastRandomized3BoxData.length === 0) {
+        showToast("⚠️ Acak urutan terlebih dahulu!");
+        return;
+      }
+
+      const tsElem = document.getElementById('randomizer-timestamp');
+      const timestamp = tsElem ? tsElem.innerText : '';
+
+      let text = `*🎲 HASIL ACAKAN & JADWAL PRESENTASI INFORMATIKA 🎲*\n`;
+      text += `🕒 *${timestamp}*\n`;
+      text += `===================================\n\n`;
+      
+      lastRandomized3BoxData.forEach((item) => {
+        text += `*URUTAN #${item.rank}*: ${item.name}\n`;
+        text += `📅 *Jadwal:* ${item.datetime}\n`;
+        text += `-----------------------------------\n`;
+      });
+      text += `\n_Mohon hadir 10 menit sebelum jam tampil masing-masing._ ✨`;
+
+      copyToClipboard(text);
+      showToast("📲 Hasil disalin rapi untuk WhatsApp!");
+    }
+
+    function downloadResultsTxt() {
+      if (lastRandomized3BoxData.length === 0) {
+        showToast("⚠️ Acak urutan terlebih dahulu!");
+        return;
+      }
+
+      const tsElem = document.getElementById('randomizer-timestamp');
+      const timestamp = tsElem ? tsElem.innerText : '';
+
+      let text = `HASIL ACAKAN & JADWAL PRESENTASI INFORMATIKA\n`;
+      text += `${timestamp}\n`;
+      text += `===================================\n\n`;
+      
+      lastRandomized3BoxData.forEach((item) => {
+        text += `URUTAN #${item.rank} : ${item.name}\n`;
+        text += `  - Jadwal  : ${item.datetime}\n`;
+        text += `-----------------------------------\n`;
+      });
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Jadwal_Presentasi_Informatika_${Date.now()}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("💾 File TXT berhasil diunduh!");
+    }
+
+    // SLIDE 10: 10 MINI-GAMES LOGIC SWITCHER & ENHANCEMENTS
+    function switchGameTab(gameId) {
+      for (let i = 1; i <= 10; i++) {
+        const tabBtn = document.getElementById(`tab-game-${i}`);
+        const container = document.getElementById(`game-container-${i}`);
+        
+        if (tabBtn && container) {
+          if (i === gameId) {
+            tabBtn.className = "px-3.5 py-2 rounded-xl text-xs font-black transition-all border bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 border-cyan-400 shadow-lg shadow-cyan-500/20";
+            container.classList.remove('hidden');
+          } else {
+            tabBtn.className = "px-3.5 py-2 rounded-xl text-xs font-black border border-slate-700 bg-slate-900 text-slate-300 hover:text-white transition-all";
+            container.classList.add('hidden');
+          }
+        }
+      }
+    }
+
+    // GAME 1: PUZZLE POTONGAN MEME IT
+    function initPuzzleGame() {
+      const hint = document.getElementById('puzzle-reference-img');
+      if (hint) hint.style.backgroundImage = `url('${puzzleSvgGraphic}')`;
+      resetPuzzleGame();
+    }
+
+    function resetPuzzleGame() {
+      clearInterval(puzzleTimerInterval);
+      puzzleMoves = 0;
+      puzzleTimerSeconds = 0;
+      puzzleSolved = false;
+      selectedTileIndex = null;
+
+      const movesElem = document.getElementById('puzzle-moves');
+      const timerElem = document.getElementById('puzzle-timer');
+      const statusBox = document.getElementById('puzzle-status');
+
+      if (movesElem) movesElem.innerText = "Langkah: 0";
+      if (timerElem) timerElem.innerText = "Waktu: 00:00";
+      if (statusBox) {
+        statusBox.className = "p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200 font-bold text-center";
+        statusBox.innerText = "💡 Klik potongan pertama, lalu klik potongan kedua untuk menukar posisinya!";
+      }
+
+      do {
+        puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8].sort(() => Math.random() - 0.5);
+      } while (isPuzzleSolved());
+
+      renderPuzzleBoard();
+
+      puzzleTimerInterval = setInterval(() => {
+        puzzleTimerSeconds++;
+        const mins = String(Math.floor(puzzleTimerSeconds / 60)).padStart(2, '0');
+        const secs = String(puzzleTimerSeconds % 60).padStart(2, '0');
+        const timerEl = document.getElementById('puzzle-timer');
+        if (timerEl) timerEl.innerText = `Waktu: ${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function autoSolvePuzzle() {
+      puzzleState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+      renderPuzzleBoard();
+      puzzleSolved = true;
+      clearInterval(puzzleTimerInterval);
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+      }
+      const statusBox = document.getElementById('puzzle-status');
+      if (statusBox) {
+        statusBox.className = "p-3 rounded-xl bg-emerald-950 border border-emerald-500/60 text-xs font-mono text-emerald-300 text-center font-black shadow-lg shadow-emerald-500/20";
+        statusBox.innerHTML = `🎉 PUZZLE BERHASIL DISUSUN DENGAN BANTUAN AUTO-SOLVE! 🔥`;
+      }
+    }
+
+    function renderPuzzleBoard() {
+      const board = document.getElementById('puzzle-board');
+      if (!board) return;
+      board.innerHTML = '';
+
+      puzzleState.forEach((pieceIdx, currentPos) => {
+        const tile = document.createElement('div');
+        const row = Math.floor(pieceIdx / 3);
+        const col = pieceIdx % 3;
+        const posX = col * 50;
+        const posY = row * 50;
+
+        tile.className = `relative rounded-xl border-2 transition-all cursor-pointer bg-no-repeat overflow-hidden select-none active:scale-95 ${selectedTileIndex === currentPos ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-105 z-10' : 'border-slate-700 hover:border-purple-400'}`;
+        tile.style.backgroundImage = `url('${puzzleSvgGraphic}')`;
+        tile.style.backgroundSize = '300% 300%';
+        tile.style.backgroundPosition = `${posX}% ${posY}%`;
+        tile.innerHTML = `<span class="absolute bottom-1 right-1 text-xs font-mono font-black bg-slate-950 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/40">${currentPos + 1}</span>`;
+
+        tile.onclick = () => handleTileClick(currentPos);
+        board.appendChild(tile);
+      });
+    }
+
+    function handleTileClick(clickedPos) {
+      if (puzzleSolved) return;
+
+      if (selectedTileIndex === null) {
+        selectedTileIndex = clickedPos;
+        renderPuzzleBoard();
+      } else if (selectedTileIndex === clickedPos) {
+        selectedTileIndex = null;
+        renderPuzzleBoard();
+      } else {
+        const temp = puzzleState[selectedTileIndex];
+        puzzleState[selectedTileIndex] = puzzleState[clickedPos];
+        puzzleState[clickedPos] = temp;
+
+        selectedTileIndex = null;
+        puzzleMoves++;
+        const movesEl = document.getElementById('puzzle-moves');
+        if (movesEl) movesEl.innerText = `Langkah: ${puzzleMoves}`;
+
+        renderPuzzleBoard();
+
+        if (isPuzzleSolved()) {
+          puzzleSolved = true;
+          clearInterval(puzzleTimerInterval);
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+          }
+
+          const statusBox = document.getElementById('puzzle-status');
+          if (statusBox) {
+            statusBox.className = "p-3 rounded-xl bg-emerald-950 border border-emerald-500/60 text-xs font-mono text-emerald-300 text-center font-black shadow-lg shadow-emerald-500/20";
+            statusBox.innerHTML = `🎉 SELAMAT! Gambar meme koding berhasil disatukan sempurna dalam ${puzzleMoves} langkah! 🔥`;
+          }
+        }
+      }
+    }
+
+    function isPuzzleSolved() {
+      return puzzleState.every((val, index) => val === index);
+    }
+
+    function togglePuzzleHint() {
+      const hintBox = document.getElementById('puzzle-hint-box');
+      const text = document.getElementById('hint-btn-text');
+      if (!hintBox) return;
+      if (hintBox.classList.contains('hidden')) {
+        hintBox.classList.remove('hidden');
+        if (text) text.innerText = "Sembunyikan";
+      } else {
+        hintBox.classList.add('hidden');
+        if (text) text.innerText = "Petunjuk";
+      }
+    }
+
+    // GAME 2: WHACK-A-BUG ENHANCED
+    let whackScore = 0;
+    let whackTimer = 20;
+    let whackInterval = null;
+    let bugTimer = null;
+    let activeBugIndex = null;
+    let isGoldenBug = false;
+
+    function startWhackGame() {
+      clearInterval(whackInterval);
+      clearInterval(bugTimer);
+      whackScore = 0;
+      whackTimer = 20;
+
+      const scoreEl = document.getElementById('whack-score');
+      const timerEl = document.getElementById('whack-timer');
+      const statusEl = document.getElementById('whack-status');
+
+      if (scoreEl) scoreEl.innerText = `Skor: 0 Bug`;
+      if (timerEl) timerEl.innerText = `Waktu: 20s`;
+      if (statusEl) statusEl.innerText = "⚡ Pukul Bug sebanyak mungkin sebelum waktu habis!";
+
+      renderWhackBoard();
+
+      whackInterval = setInterval(() => {
+        whackTimer--;
+        if (timerEl) timerEl.innerText = `Waktu: ${whackTimer}s`;
+        if (whackTimer <= 0) {
+          clearInterval(whackInterval);
+          clearInterval(bugTimer);
+          activeBugIndex = null;
+          renderWhackBoard();
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 80, spread: 70 });
+          }
+          if (statusEl) statusEl.innerText = `🏆 SELESAI! Kamu berhasil membasmi ${whackScore} poin Bug koding!`;
+        }
+      }, 1000);
+
+      popupBug();
+    }
+
+    function renderWhackBoard() {
+      const board = document.getElementById('whack-board');
+      if (!board) return;
+      board.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        const hole = document.createElement('div');
+        hole.className = `w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-slate-900 border-2 ${activeBugIndex === i ? (isGoldenBug ? 'border-amber-400 bg-amber-950/60 shadow-lg shadow-amber-400/40' : 'border-rose-500 bg-rose-950/60 shadow-lg shadow-rose-500/30') : 'border-slate-700'} flex items-center justify-center text-3xl cursor-pointer transition-all active:scale-90 select-none`;
+        
+        if (activeBugIndex === i) {
+          hole.innerHTML = `<span class="animate-bounce">${isGoldenBug ? '⭐' : '🐛'}</span>`;
+          hole.onclick = () => hitBug(i);
+        } else {
+          hole.innerHTML = `<span class="text-slate-400 text-xs font-mono font-bold">PORT ${i+1}</span>`;
+        }
+
+        board.appendChild(hole);
+      }
+    }
+
+    function popupBug() {
+      if (whackTimer <= 0) return;
+      activeBugIndex = Math.floor(Math.random() * 9);
+      isGoldenBug = Math.random() < 0.25;
+      renderWhackBoard();
+      bugTimer = setTimeout(() => {
+        activeBugIndex = null;
+        renderWhackBoard();
+        if (whackTimer > 0) setTimeout(popupBug, Math.random() * 400 + 200);
+      }, Math.random() * 600 + 400);
+    }
+
+    function hitBug(index) {
+      if (activeBugIndex === index) {
+        const pts = isGoldenBug ? 20 : 10;
+        whackScore += pts;
+        const scoreEl = document.getElementById('whack-score');
+        if (scoreEl) scoreEl.innerText = `Skor: ${whackScore}`;
+        
+        showToast(isGoldenBug ? "⭐ GOLDEN BUG! +20 Poin!" : "💥 BUG HIT! +10 Poin");
+
+        activeBugIndex = null;
+        clearTimeout(bugTimer);
+        renderWhackBoard();
+        setTimeout(popupBug, 150);
+      }
+    }
+
+    // GAME 3: MEMORY CARD MATCHING IT (3D FLIP)
+    const memoryIconsList = ['💻', '☕', '🚀', '🤖', '⚡', '🔐'];
+    let memoryCardsArray = [];
+    let memoryFlippedCards = [];
+    let memoryMatchedPairs = 0;
+
+    function initMemoryGame() {
+      memoryFlippedCards = [];
+      memoryMatchedPairs = 0;
+      const scoreEl = document.getElementById('memory-score');
+      const statusEl = document.getElementById('memory-status');
+      if (scoreEl) scoreEl.innerText = "Pasangan: 0 / 6";
+      if (statusEl) statusEl.innerText = "Buka 2 kartu dan temukan 6 pasang kartu identik!";
+
+      memoryCardsArray = [...memoryIconsList, ...memoryIconsList].sort(() => Math.random() - 0.5);
+      const board = document.getElementById('memory-board');
+      if (!board) return;
+      board.innerHTML = '';
+
+      memoryCardsArray.forEach((icon, idx) => {
+        const card = document.createElement('div');
+        card.className = "memory-card w-full h-16 sm:h-20 cursor-pointer select-none";
+        card.dataset.icon = icon;
+        card.dataset.idx = idx;
+
+        card.innerHTML = `
+          <div class="memory-card-inner shadow-md">
+            <div class="memory-card-front bg-slate-900 border-2 border-slate-700 text-cyan-400 font-bold text-xl hover:border-cyan-500">
+              ❓
+            </div>
+            <div class="memory-card-back bg-gradient-to-tr from-purple-900 to-slate-900 border-2 border-purple-400 text-3xl">
+              ${icon}
+            </div>
+          </div>
+        `;
+
+        card.onclick = () => flip3DMemoryCard(card);
+        board.appendChild(card);
+      });
+    }
+
+    function flip3DMemoryCard(card) {
+      if (memoryFlippedCards.length >= 2 || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+      card.classList.add('flipped');
+      memoryFlippedCards.push(card);
+
+      if (memoryFlippedCards.length === 2) {
+        const [c1, c2] = memoryFlippedCards;
+        if (c1.dataset.icon === c2.dataset.icon && c1.dataset.idx !== c2.dataset.idx) {
+          c1.classList.add('matched');
+          c2.classList.add('matched');
+          memoryMatchedPairs++;
+
+          const scoreEl = document.getElementById('memory-score');
+          if (scoreEl) scoreEl.innerText = `Pasangan: ${memoryMatchedPairs} / 6`;
+          memoryFlippedCards = [];
+
+          if (memoryMatchedPairs === 6) {
+            if (typeof confetti === 'function') {
+              confetti({ particleCount: 90, spread: 80 });
+            }
+            const statusEl = document.getElementById('memory-status');
+            if (statusEl) statusEl.innerText = "🎉 SELAMAT! Seluruh 6 pasangan IT tertebak sempurna!";
+          }
+        } else {
+          setTimeout(() => {
+            c1.classList.remove('flipped');
+            c2.classList.remove('flipped');
+            memoryFlippedCards = [];
+          }, 800);
+        }
+      }
+    }
+
+    // GAME 4: KUIS TEBAK ERROR & SYNTAX
+    const quizQuestions = [
+      {
+        q: "Apa penyebab utama error 'Uncaught SyntaxError: Unexpected token'?",
+        options: ["Lupa titik koma atau kurung buka/tutup 😅", "Komputer kehabisan baterai", "Kabel LAN terlepas", "Kopi tumpah ke keyboard"],
+        correct: 0,
+        exp: "SyntaxError terjadi ketika sintaks penulisan kode tidak sesuai dengan aturan bahasa pemrograman!"
+      },
+      {
+        q: "Status HTTP Code 404 pada web server artinya apa?",
+        options: ["Server meledak", "Not Found (Halaman Tidak Ditemukan) 🔍", "Akses diterima dengan sukses", "Koneksi Wi-Fi terputus"],
+        correct: 1,
+        exp: "404 Not Found adalah kode respons standar yang menandakan URL yang diminta tidak ditemukan di server."
+      },
+      {
+        q: "Apa fungsi utama dari perintah 'console.log()' di JavaScript?",
+        options: ["Menghapus file harddisk", "Mencetak pesan debug/output ke Console 💻", "Mengunci layar komputer", "Membuat animasi otomatis"],
+        correct: 1,
+        exp: "console.log() digunakan programmer untuk memeriksa nilai variabel dan alur kode saat debugging!"
+      },
+      {
+        q: "Bahasa pemformatan tampilan gaya desain web adalah?",
+        options: ["Python", "CSS (Cascading Style Sheets) 🎨", "SQL", "C++"],
+        correct: 1,
+        exp: "CSS bertanggung jawab mengatur tata letak, warna, font, dan estetika visual halaman web."
+      },
+      {
+        q: "Struktur data mana yang menganut prinsip LIFO (Last In First Out)?",
+        options: ["Stack (Tumpukan) 📚", "Queue (Antrean)", "Array", "Database"],
+        correct: 0,
+        exp: "Stack bekerja seperti tumpukan piring: elemen yang terakhir dimasukkan adalah yang pertama dikeluarkan."
+      }
+    ];
+
+    let currentQuizIdx = 0;
+    let quizScore = 0;
+
+    function initQuizGame() {
+      currentQuizIdx = 0;
+      quizScore = 0;
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const quizBox = document.getElementById('quiz-box');
+      if (!quizBox) return;
+      const scoreEl = document.getElementById('quiz-score');
+      const progEl = document.getElementById('quiz-progress');
+
+      if (scoreEl) scoreEl.innerText = `Skor: ${quizScore}`;
+      if (progEl) progEl.innerText = `Pertanyaan ${currentQuizIdx + 1}/${quizQuestions.length}`;
+
+      if (currentQuizIdx >= quizQuestions.length) {
+        let rankBadge = "Junior Debugger 🐣";
+        if (quizScore >= 40) rankBadge = "Senior Code Architect 🚀";
+
+        quizBox.innerHTML = `
+          <div class="p-6 text-center space-y-3 bg-slate-950 rounded-2xl border border-emerald-500/50">
+            <h4 class="text-xl font-black text-emerald-400">🎉 KUIS SELESAI!</h4>
+            <p class="text-xs md:text-sm text-slate-200 font-mono font-bold">Skor Akhir Kamu: <b class="text-cyan-400 text-base">${quizScore} / ${quizQuestions.length * 10}</b></p>
+            <span class="inline-block px-3 py-1 bg-emerald-950 text-emerald-300 font-mono text-xs font-black rounded-full border border-emerald-500/40">Gelar: ${rankBadge}</span>
+            <div class="pt-2">
+              <button onclick="initQuizGame()" class="px-5 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-slate-950 font-black text-xs rounded-xl shadow-lg">Main Lagi 🔄</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const qData = quizQuestions[currentQuizIdx];
+      quizBox.innerHTML = `
+        <h4 class="font-black text-xs md:text-sm text-white mb-2 font-mono leading-relaxed">${qData.q}</h4>
+        <div class="space-y-2">
+          ${qData.options.map((opt, i) => `
+            <button onclick="answerQuiz(${i})" class="w-full text-left p-3 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 text-xs md:text-sm font-mono text-slate-100 font-bold transition-colors flex items-center gap-2">
+              <span class="w-6 h-6 rounded-md bg-slate-950 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-xs shrink-0 font-black">${String.fromCharCode(65 + i)}</span>
+              <span>${opt}</span>
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function answerQuiz(optIdx) {
+      const qData = quizQuestions[currentQuizIdx];
+      if (optIdx === qData.correct) {
+        quizScore += 10;
+        showToast("✅ JAWABAN BENAR! +10 Poin");
+      } else {
+        showToast(`❌ SALAH! ${qData.exp}`);
+      }
+      currentQuizIdx++;
+      renderQuizQuestion();
+    }
+
+    // GAME 5: CHALLENGE PASSWORD ABSURD
+    function autoFillAbsurdPassword() {
+      const input = document.getElementById('absurd-pass-input');
+      if (input) {
+        input.value = "PRO_CSS☕404bekasi";
+        checkAbsurdPassword();
+      }
+    }
+
+    function checkAbsurdPassword() {
+      const input = document.getElementById('absurd-pass-input');
+      if (!input) return;
+      const val = input.value;
+      
+      const r1 = val.length >= 8;
+      const r2 = val.includes('☕');
+      const r3 = val.includes('CSS');
+      const r4 = val.includes('404');
+      const r5 = val.includes('PRO');
+
+      updateRuleUI('rule-1', r1, "1. Panjang minimal 8 karakter");
+      updateRuleUI('rule-2', r2, "2. Harus mengandung emoji kopi ☕");
+      updateRuleUI('rule-3', r3, "3. Harus memuat kata 'CSS' (huruf kapital)");
+      updateRuleUI('rule-4', r4, "4. Harus memuat angka 404");
+      updateRuleUI('rule-5', r5, "5. Harus memuat kata 'PRO' (huruf kapital)");
+
+      const passStatus = document.getElementById('pass-status');
+      if (!passStatus) return;
+      if (r1 && r2 && r3 && r4 && r5) {
+        passStatus.className = "p-3 rounded-xl bg-emerald-950 border border-emerald-500/60 text-xs font-mono text-emerald-300 text-center font-black";
+        passStatus.innerText = "🎉 LUAR BIASA! Password super rumit berhasil terverifikasi 100%!";
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 70, spread: 60 });
+        }
+      } else {
+        passStatus.className = "p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-center text-slate-300 font-bold";
+        passStatus.innerText = "Ketik password di atas untuk verifikasi!";
+      }
+    }
+
+    function updateRuleUI(elemId, isValid, text) {
+      const elem = document.getElementById(elemId);
+      if (!elem) return;
+      if (isValid) {
+        elem.className = "p-2 rounded-xl bg-emerald-950/60 border border-emerald-500/50 text-emerald-300 flex items-center gap-2 font-bold";
+        elem.innerHTML = `<span>✓ ${text}</span>`;
+      } else {
+        elem.className = "p-2 rounded-xl bg-slate-900 border border-slate-700 text-rose-400 flex items-center gap-2 font-bold";
+        elem.innerHTML = `<span>❌ ${text}</span>`;
+      }
+    }
+
+    // GAME 6: STRESS RELEASE DEV CLICKER
+    let clickerProgress = 0;
+
+    function clickDevProject(e) {
+      clickerProgress += 5;
+      if (clickerProgress > 100) clickerProgress = 100;
+
+      const pctEl = document.getElementById('clicker-percent');
+      const barEl = document.getElementById('clicker-bar');
+      const commentEl = document.getElementById('clicker-comment');
+
+      if (pctEl) pctEl.innerText = `${clickerProgress}%`;
+      if (barEl) barEl.style.width = `${clickerProgress}%`;
+
+      // Trigger floating particle
+      if (e && e.clientX) {
+        createClickParticle(e.clientX, e.clientY);
+      }
+
+      const comments = [
+        "Client baru aja bayar DP, ayo koding secepatnya!",
+        "Koding sambil minum kopi ☕...",
+        "Client: 'Mas, bisa ganti warna dikit gak?' 😅",
+        "Menambah animasi cyberpunk super keren!",
+        "Hampir beres, tinggal deploy ke server! 🚀",
+        "PROJECT DEPLOYED! GAJIAN TAHUNAN DIBAYAR FULL! 🎉"
+      ];
+
+      const idx = Math.min(Math.floor(clickerProgress / 20), comments.length - 1);
+      if (commentEl) commentEl.innerText = `"${comments[idx]}"`;
+
+      if (clickerProgress >= 100 && typeof confetti === 'function') {
+        confetti({ particleCount: 90, spread: 80 });
+      }
+    }
+
+    function createClickParticle(x, y) {
+      const particle = document.createElement('div');
+      particle.className = "click-particle text-cyan-400 text-base font-black";
+      particle.innerText = "+5%";
+      particle.style.left = `${x - 15}px`;
+      particle.style.top = `${y - 20}px`;
+      document.body.appendChild(particle);
+
+      setTimeout(() => particle.remove(), 700);
+    }
+
+    function resetClickerGame() {
+      clickerProgress = 0;
+      const pctEl = document.getElementById('clicker-percent');
+      const barEl = document.getElementById('clicker-bar');
+      const commentEl = document.getElementById('clicker-comment');
+
+      if (pctEl) pctEl.innerText = "0%";
+      if (barEl) barEl.style.width = "0%";
+      if (commentEl) commentEl.innerText = `"Client baru aja bayar DP, ayo koding secepatnya!"`;
+    }
+
+    // GAME 7: TANGKAP KOPI PROGRAMMER
+    let catchScore = 0;
+    let catchTimerVal = 15;
+    let catchInterval = null;
+    let basketPos = 45;
+    let fallingItemPos = { x: 50, y: 0, type: '☕' };
+
+    function startCatchGame() {
+      clearInterval(catchInterval);
+      catchScore = 0;
+      catchTimerVal = 15;
+      const scoreEl = document.getElementById('catch-score');
+      const timerEl = document.getElementById('catch-timer');
+      if (scoreEl) scoreEl.innerText = "Kopi: 0 ☕";
+      if (timerEl) timerEl.innerText = "Waktu: 15s";
+
+      resetFallingItem();
+
+      catchInterval = setInterval(() => {
+        catchTimerVal--;
+        const tEl = document.getElementById('catch-timer');
+        if (tEl) tEl.innerText = `Waktu: ${catchTimerVal}s`;
+
+        fallingItemPos.y += 18;
+        const itemElem = document.getElementById('catch-falling-item');
+        if (itemElem) itemElem.style.top = `${fallingItemPos.y}px`;
+
+        if (fallingItemPos.y >= 140) {
+          if (Math.abs(fallingItemPos.x - basketPos) < 20) {
+            if (fallingItemPos.type === '☕') {
+              catchScore += 10;
+              showToast("☕ +10 Kopi!");
+            } else if (fallingItemPos.type === '⚡') {
+              catchScore += 20;
+              showToast("⚡ +20 Energy Drink!");
+            } else {
+              catchScore = Math.max(0, catchScore - 5);
+              showToast("🐛 -5 Kena Bug!");
+            }
+            const sEl = document.getElementById('catch-score');
+            if (sEl) sEl.innerText = `Skor: ${catchScore}`;
+          }
+          resetFallingItem();
+        }
+
+        if (catchTimerVal <= 0) {
+          clearInterval(catchInterval);
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 70, spread: 70 });
+          }
+          showToast(`🏆 Game Selesai! Total Skor: ${catchScore}`);
+        }
+      }, 150);
+    }
+
+    function resetFallingItem() {
+      fallingItemPos.x = Math.floor(Math.random() * 75) + 10;
+      fallingItemPos.y = 0;
+      const rand = Math.random();
+      if (rand > 0.4) fallingItemPos.type = '☕';
+      else if (rand > 0.15) fallingItemPos.type = '⚡';
+      else fallingItemPos.type = '🐛';
+
+      const itemElem = document.getElementById('catch-falling-item');
+      if (itemElem) {
+        itemElem.innerText = fallingItemPos.type;
+        itemElem.style.left = `${fallingItemPos.x}%`;
+        itemElem.style.top = `0px`;
+      }
+    }
+
+    function moveBasket(dir) {
+      if (dir === 'left') basketPos = Math.max(5, basketPos - 15);
+      if (dir === 'right') basketPos = Math.min(85, basketPos + 15);
+
+      const basket = document.getElementById('catch-basket');
+      if (basket) basket.style.left = `${basketPos}%`;
+    }
+
+    // GAME 8: COLOK KABEL SERVER
+    let selectedCableColor = null;
+    let connectedCables = { red: false, green: false, blue: false };
+
+    function selectCable(color) {
+      selectedCableColor = color;
+      const status = document.getElementById('cable-status');
+      if (status) {
+        status.innerText = `Kabel ${color.toUpperCase()} dipilih! Klik Port dengan warna yang sama!`;
+        status.className = "p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs font-mono text-center text-amber-300 font-bold";
+      }
+    }
+
+    function connectPort(portColor) {
+      const status = document.getElementById('cable-status');
+      if (!selectedCableColor) {
+        if (status) status.innerText = "⚠️ Pilih kabel di sebelah kiri dulu!";
+        return;
+      }
+
+      if (selectedCableColor === portColor) {
+        connectedCables[portColor] = true;
+        const portText = document.getElementById(`port-${portColor}-text`);
+        if (portText) portText.innerText = `✅ Port ${portColor.toUpperCase()} Connected!`;
+        
+        drawCableConnectionSVG(selectedCableColor, portColor);
+
+        if (status) {
+          status.innerText = `✅ Sukses! Kabel ${portColor.toUpperCase()} terhubung sempurna!`;
+          status.className = "p-3 rounded-xl bg-emerald-950 border border-emerald-500/60 text-xs font-mono text-center text-emerald-300 font-black";
+        }
+        selectedCableColor = null;
+
+        if (connectedCables.red && connectedCables.green && connectedCables.blue) {
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 90, spread: 80 });
+          }
+          if (status) status.innerText = "🚀 SELAMAT! Seluruh kabel terhubung, Server Dual-Connection ONLINE 100Gbps!";
+        }
+      } else {
+        if (status) {
+          status.innerText = `❌ SALAH PORT! Kabel ${selectedCableColor.toUpperCase()} tidak cocok dengan Port ${portColor.toUpperCase()}!`;
+          status.className = "p-3 rounded-xl bg-rose-950 border border-rose-500/60 text-xs font-mono text-center text-rose-300 font-black";
+        }
+      }
+    }
+
+    function drawCableConnectionSVG(cable, port) {
+      const svg = document.getElementById('cable-svg-layer');
+      if (!svg) return;
+      
+      const colors = { red: '#f43f5e', green: '#10b981', blue: '#06b6d4' };
+
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", "25%");
+      line.setAttribute("y1", cable === 'red' ? '25%' : cable === 'green' ? '50%' : '75%');
+      line.setAttribute("x2", "75%");
+      line.setAttribute("y2", port === 'green' ? '25%' : port === 'blue' ? '50%' : '75%');
+      line.setAttribute("stroke", colors[cable] || '#38bdf8');
+      line.setAttribute("stroke-width", "4");
+      line.setAttribute("stroke-dasharray", "6 3");
+
+      svg.appendChild(line);
+    }
+
+    // GAME 9: BUG RUNNER DINO JUMP
+    let dinoCanvasLoop = null;
+    let dinoState = { x: 40, y: 110, vy: 0, isJumping: false, score: 0, gameOver: false };
+    let bugState = { x: 400, speed: 5 };
+
+    function startDinoGameCanvas() {
+      cancelAnimationFrame(dinoCanvasLoop);
+      dinoState = { x: 40, y: 110, vy: 0, isJumping: false, score: 0, gameOver: false };
+      bugState = { x: 400, speed: 5.5 };
+
+      const canvas = document.getElementById('dino-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function gameLoop() {
+        if (dinoState.gameOver) return;
+
+        // Physics Update
+        if (dinoState.isJumping) {
+          dinoState.y += dinoState.vy;
+          dinoState.vy += 0.7; // Gravity
+          if (dinoState.y >= 110) {
+            dinoState.y = 110;
+            dinoState.isJumping = false;
+          }
+        }
+
+        // Bug Obstacle Update
+        bugState.x -= bugState.speed;
+        if (bugState.x < -20) {
+          bugState.x = 400 + Math.random() * 50;
+          dinoState.score += 10;
+          bugState.speed += 0.2; // Speed up
+          const scoreEl = document.getElementById('dino-score');
+          if (scoreEl) scoreEl.innerText = `Skor: ${dinoState.score}`;
+        }
+
+        // Collision Check
+        if (bugState.x < dinoState.x + 25 && bugState.x > dinoState.x - 10 && dinoState.y > 85) {
+          dinoState.gameOver = true;
+          showToast("💥 GAME OVER! Kena Bug koding!");
+        }
+
+        // Draw Canvas Frame
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Ground line
+        ctx.strokeStyle = "#06b6d4";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, 135);
+        ctx.lineTo(400, 135);
+        ctx.stroke();
+
+        // Player (Developer)
+        ctx.font = "24px sans-serif";
+        ctx.fillText("🧑‍💻", dinoState.x, dinoState.y);
+
+        // Obstacle (Bug)
+        ctx.fillText("🐛", bugState.x, 110);
+
+        if (!dinoState.gameOver) {
+          dinoCanvasLoop = requestAnimationFrame(gameLoop);
+        }
+      }
+
+      gameLoop();
+    }
+
+    function triggerDinoJumpCanvas() {
+      if (!dinoState.isJumping && !dinoState.gameOver) {
+        dinoState.isJumping = true;
+        dinoState.vy = -12; // Jump Impulse
+      }
+    }
+
+    // GAME 10: RODA NASIB IT
+    const wheelSectors = [
+      "☕ Kopi Gratis", "🚀 Zero Bug", "💰 Bonus 100JT", "🐛 Bug Line 404",
+      "🍕 Pizza Party", "💻 Macbook M3", "🎉 Deploy Sukses", "😴 Tidur Nyenyak"
+    ];
+    const wheelColors = ["#06b6d4", "#8b5cf6", "#10b981", "#ec4899", "#f59e0b", "#3b82f6", "#a855f7", "#14b8a6"];
+    let wheelAngle = 0;
+    let isSpinningWheel = false;
+
+    function initWheelCanvas() {
+      const canvas = document.getElementById('wheel-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      drawWheel(ctx, wheelAngle);
+    }
+
+    function drawWheel(ctx, angle) {
+      const numSectors = wheelSectors.length;
+      const arc = (2 * Math.PI) / numSectors;
+
+      ctx.clearRect(0, 0, 220, 220);
+      ctx.save();
+      ctx.translate(110, 110);
+      ctx.rotate(angle);
+
+      for (let i = 0; i < numSectors; i++) {
+        const sectorAngle = i * arc;
+        ctx.beginPath();
+        ctx.fillStyle = wheelColors[i % wheelColors.length];
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, 100, sectorAngle, sectorAngle + arc);
+        ctx.fill();
+
+        // Sector Text
+        ctx.save();
+        ctx.rotate(sectorAngle + arc / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 9px sans-serif";
+        ctx.fillText(wheelSectors[i], 90, 3);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    function spinCanvasWheel() {
+      if (isSpinningWheel) return;
+      isSpinningWheel = true;
+
+      const canvas = document.getElementById('wheel-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const resultEl = document.getElementById('wheel-result');
+
+      if (resultEl) resultEl.innerText = "🎲 Roda sedang berputar...";
+
+      let spinSpeed = Math.random() * 0.3 + 0.4;
+      let currentSpin = 0;
+
+      function animateSpin() {
+        currentSpin += spinSpeed;
+        spinSpeed *= 0.985;
+        wheelAngle += spinSpeed;
+
+        drawWheel(ctx, wheelAngle);
+
+        if (spinSpeed > 0.002) {
+          requestAnimationFrame(animateSpin);
+        } else {
+          isSpinningWheel = false;
+          const numSectors = wheelSectors.length;
+          const normalizedAngle = (2 * Math.PI - (wheelAngle % (2 * Math.PI))) % (2 * Math.PI);
+          const winningIdx = Math.floor(normalizedAngle / ((2 * Math.PI) / numSectors));
+          
+          const prize = wheelSectors[winningIdx];
+          if (resultEl) resultEl.innerText = `✨ NASIBMU HARI INI: "${prize}"!`;
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 80, spread: 70 });
+          }
+        }
+      }
+
+      animateSpin();
+    }
+
+    // SLIDE 3: CHECKLIST GOOGLE SLIDES
+    function updateShareChecklist() {
+      const checkboxes = document.querySelectorAll('#slide-2 input[type="checkbox"]');
+      let checkedCount = 0;
+      checkboxes.forEach(cb => { if (cb.checked) checkedCount++; });
+
+      const status = document.getElementById('checklist-status');
+      const progress = document.getElementById('checklist-progress');
+
+      const pct = (checkedCount / checkboxes.length) * 100;
+      if (progress) progress.style.width = `${pct}%`;
+
+      if (checkedCount === checkboxes.length) {
+        if (status) {
+          status.innerText = "SIAP KIRIM! (3/3) 🎉";
+          status.className = "text-emerald-400 font-black";
+        }
+        showToast("✅ Link 100% Aman Siap Di-share!");
+      } else {
+        if (status) {
+          status.innerText = `Belum Siap (${checkedCount}/3)`;
+          status.className = "text-rose-400 font-black";
+        }
+      }
+    }
+
+    // SLIDE 5: MEMBER MODAL POPUP
+    function openMemberModal(index) {
+      const member = membersData[index];
+      if (!member) return;
+
+      const nameEl = document.getElementById('modal-name');
+      const roleEl = document.getElementById('modal-role');
+      const quoteEl = document.getElementById('modal-quote');
+      const coffeeEl = document.getElementById('modal-coffee-bar');
+      const bugEl = document.getElementById('modal-bug-bar');
+
+      if (nameEl) nameEl.innerText = member.name;
+      if (roleEl) roleEl.innerText = member.role;
+      if (quoteEl) quoteEl.innerText = `"${member.quote}"`;
+      if (coffeeEl) coffeeEl.style.width = member.coffee;
+      if (bugEl) bugEl.style.width = member.bug;
+
+      const iconBox = document.getElementById('modal-icon-bg');
+      if (iconBox) iconBox.className = `w-20 h-20 rounded-2xl bg-${member.color}-950 border-2 border-${member.color}-500 flex items-center justify-center mb-3`;
+      
+      const icon = document.getElementById('modal-icon');
+      if (icon) icon.className = `fa-solid ${member.icon} text-2xl text-${member.color}-400`;
+
+      const modal = document.getElementById('member-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeMemberModal() {
+      const modal = document.getElementById('member-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // SLIDE 6: TIMELINE DETAIL
+    function showTimelineDetail(index) {
+      const detailBox = document.getElementById('timeline-detail-box');
+      const details = [
+        "Ada Lovelace menulis catatan algoritma pada tahun 1843 untuk menghitung angka Bernoulli. Dia diakui secara luas sebagai programmer komputer pertama di dunia!",
+        "ENIAC (1945) membutuhkan daya listrik 150 kW dan mengandung lebih dari 17.000 tabung hampa udara!",
+        "Pesan pertama yang dikirim via ARPANET pada 1969 adalah 'LO' (seharusnya 'LOGIN' tapi sistem terputus saat huruf O!).",
+        "Di era saat ini, AI Superintelligence mampu membantu mendesain arsitektur perangkat lunak kompleks hanya dari perintah teks sederhana!"
+      ];
+      if (detailBox) {
+        detailBox.innerHTML = `
+          <i class="fa-solid fa-sparkles text-cyan-400 text-lg shrink-0"></i>
+          <span><b>Fakta Unik Sejarah:</b> ${details[index]}</span>
+        `;
+      }
+    }
+
+    // SLIDE 8: METRIC BOOST
+    function boostMetric(btn) {
+      const valSpan = btn.querySelector('.metric-val');
+      if (valSpan) valSpan.innerText = "100% MAX! 🚀";
+      showToast("⚡ Efisiensi Sektor Maksimal!");
+    }
+
+    // SLIDE 9: CODE SIMULATOR
+    function loadCodePreset(type) {
+      const area = document.getElementById('simulator-code');
+      if (!area) return;
+      if (type === 'kopi') {
+        area.value = `let airPanas = true;\nlet adaKopi = true;\n\nif (airPanas && adaKopi) {\n  console.log("☕ Kopi Hitam Siap Menemanimu Ngoding!");\n} else {\n  console.log("💧 Air Belum Mendidih!");\n}`;
+      } else if (type === 'loop') {
+        area.value = `for (let i = 1; i <= 3; i++) {\n  console.log("Semangat Belajar Informatika Ke-" + i + " 🔥");\n}`;
+      }
+    }
+
+    function runCodeSimulator() {
+      const codeElem = document.getElementById('simulator-code');
+      const outputBox = document.getElementById('simulator-output');
+      if (!codeElem || !outputBox) return;
+
+      const code = codeElem.value;
+      outputBox.innerText = "> Running script...";
+      
+      setTimeout(() => {
+        let logs = [];
+        const customConsole = {
+          log: (...args) => logs.push(args.join(" "))
+        };
+
+        try {
+          const runFn = new Function('console', code);
+          runFn(customConsole);
+          
+          if (logs.length > 0) {
+            outputBox.innerText = "> OUTPUT:\n" + logs.join("\n");
+          } else {
+            outputBox.innerText = "> Program selesai tanpa output console.log().";
+          }
+        } catch (err) {
+          outputBox.innerText = `❌ ERROR: ${err.message}`;
+        }
+      }, 300);
+    }
+
+    function toggleFaq(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('i');
+      if (content) content.classList.toggle('hidden');
+      if (icon) icon.classList.toggle('rotate-180');
+    }
+
+    // SLIDE 12: CELEBRATION & RATING
+    function triggerFireworks() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 120,
+          spread: 100,
+          origin: { y: 0.6 }
+        });
+      }
+      showToast("🎉 Selebrasi Selesai Presentasi!");
+    }
+
+    function ratePresentation(stars) {
+      const starBtns = document.querySelectorAll('.star-btn');
+      const feedback = document.getElementById('rating-feedback');
+
+      const messages = [
+        "Terima kasih atas masukannya! Nanti diperbaiki lagi! ☕",
+        "Lumayan bagus! Terima kasih sudah menyimak. 👍",
+        "Sip mantap! Senang presentasi ini bermanfaat! 🌟",
+        "Keren sekali! Penjelasannya mudah dipahami! 🚀",
+        "LUAR BIASA 5 BINTANG! Kodinganmu bebas bug selamanya! 🏆✨"
+      ];
+
+      starBtns.forEach((btn, idx) => {
+        if (idx < stars) {
+          btn.className = "star-btn hover:scale-125 transition-transform text-amber-400";
+        } else {
+          btn.className = "star-btn hover:scale-125 transition-transform text-slate-600";
+        }
+      });
+
+      if (feedback) feedback.innerText = messages[stars - 1];
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 40 * stars, spread: 70, origin: { y: 0.7 } });
+      }
+    }
+
+    // UTILITIES
+    function toggleHelpModal() {
+      const modal = document.getElementById('help-modal');
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = "glass-panel px-4 py-3 rounded-xl border border-cyan-500/50 text-xs md:text-sm font-mono text-cyan-300 font-bold shadow-xl flex items-center gap-2 animate-bounce pointer-events-auto";
+      toast.innerHTML = `<i class="fa-solid fa-circle-info text-cyan-400"></i> ${msg}`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
